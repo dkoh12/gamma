@@ -1,0 +1,141 @@
+
+TAKEAWAY
+---------
+-> Python is Good but Really make sure that you know C/C++, Java
+
+
+difference between python string and unicode
+
+https://stackoverflow.com/questions/18034272/python-str-vs-unicode-types
+
+str and unicode can both hold unicode strings
+
+unicode which is python 3's `str` is meant to handle text.
+text = sequence of code pts which many be bigger than single byte
+unicode is not encoded!
+
+str = plain sequence of bytes. Does not represent text!
+in python3 `str` is called `bytes`
+
+unicode = general representation of some text which can be encoded in many different ways into a sequence of binary data.
+
+by default utf-8 takes 2 bytes.
+
+-------
+
+__repr__ goal is to be unambiguous (almost every object has this)
+__str__ goal is to be readable (optional. pretty print)
+container's __str__ uses contained objects' __repr__
+
+--------
+
+
+
+// First, Last, Address, Phone
+// Joe, Birch, 123 Tesla Ave, 12345
+// Jane, Doe, "123 Tesla Ave, Fremont, CA", 123543546
+
+
+// First: Joe, Last: Birch, Address: 123 Tesla Ave, 12345
+// First: Jane, Last: Doe, Address: "123 Tesla Ave, Fremont, CA", 123543546
+
+
+// temp = "First, Last, Address, Phone"
+// [First, Last, Address, Phone]  - temp.split(",")
+
+
+import java.io.*;
+import java.util.Arrays;
+
+class myCode
+{
+    public static void main (String[] args) throws java.lang.Exception
+    {
+        
+        String input = "First, Last, Address, Phone\nJoe, Birch, 123 Tesla Ave, 12345\nJane, Doe, \"123 Tesla Ave, Fremont, CA\", 123543546";
+        
+        String[] arr = input.split("\n");
+        
+        String s = "";
+            
+        for (String i: arr) {
+            String[] temp = i.split("\"");
+            
+            
+            for(int k=0; k<temp.length; k++){
+                
+                System.out.println("temp " + temp[k] + '\n');
+            
+                String[] x = temp[k].split(",");
+                
+                System.out.println("x " + Arrays.toString(x));
+            
+            }
+            
+            /*
+            for (int j=0; j<arr[0].length; j++) {
+                s += arr[j] + ": " + temp[j];
+  
+            }
+            */
+            
+        }
+    }
+}
+
+
+
+#include <iostream>
+using namespace std;
+
+
+void swap(int *a, int *b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+
+}
+
+int main() {
+    int a = 5;
+    int b = 8;
+
+    cout << a;
+    cout << b;
+
+    return 0;
+}
+
+---------------
+onsite
+
+Dynamic Programming - stacking boxes to get tallest height
+
+have random string
+abababbbacdcdcdcdbabacdcdbcbcbcbcbca
+return longest 2 letter substring.
+
+- use 2 arrays and 4 ints to keep track of current two substrings since each letter can be in at most two substrings. 
+
+- Object Oriented - how would you design Asteroids game?
+need Board class, Asteroid class, Rocket class, Bullet class, Parent class where asteroid and rocket extends from it. 
+
+How would you determine the size of the asteroid? Have some kind of integer value from 1-9 to determine the size of the asteroid?
+
+- indices on DB are good for lookups, but require extra storage, slows down updates/insert/delete and locking on tables could slow down queries altogether.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+
+Garbage Collection is a system that automatically recycles unused memory in programming languages. Popular example is Java. When writing Java, you don't need to control how memory is allocated and recycled. Everything happens in the background.
+
+Pro
+* makes programming easier
+* helps developers and several memory problems.
+1. prevent accessing dangling ptrs that point to an object that no longer exists
+2. prevents freeing a region of memory that is already free
+3. avoid memory leak. (unreachable region of memory that can never be freed)
+
+Con
+garbage collection consumes computing resources. 
+Not only does it need to implement the logic to recycle memory, it also consumes memory to store the status of objects. 
+without garbage collection, devloper has full control over how memory is used giving the program more flexibility and easier to optimize. (1 reason why C++ is more efficient but prone to error)
+
+
+
+Design a simple garbage collection system
+
+
+Reference counting
+every time an object is created you have a counter that counts how many times that object is referenced. When the object's counter is set to 0, delete that object.
+
+^ pro
+- do garbage collection on the fly since it releases memory at the right time
+
+^ con
+- reference counter adds space overhead to whole system
+- speed overhead. every operation would require modification of the reference counters
+- Cycles. if two object references each other, they will never be recycled
+
+
+
+Mark and Sweep
+think of it like a graph. Do a tree traversal following object references and mark all visited objects. Reach all unreachable objects and unreachable nodes without any references are the ones we want to delete.
+
+^ pro
+- simple
+
+^ con
+- entire system must be suspended during garbage collection. no mutation of working set is allowed. significantly affects performance of time-critical applications
+
+decide between make every operation slightly slower or stop the entire program once in a while.s
+
+

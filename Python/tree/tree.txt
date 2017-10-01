@@ -1,0 +1,166 @@
+
+BST insertion
+- traverse through the tree from the root and insert it
+
+deletion
+- if it is a leaf (no children), just delete it
+- if it has one child, delete node, and move the child to take its place
+- if it has 2 child, get second biggest node (right once and leftmost node)
+- and set that as the new root and remove the orginal node
+
+#Self-Balancing Binary Search Tree
+* used to construct / maintain ordered lists such as priority queues
+* used for associative arrays (hash tables/dictionary); key-value pairs are inserted w/ an ordering based on key alone
+* easily extended to record additional information or perform new operations
+
+#Red-Black Tree  (a type of BST)
+         avg & worst (guarantees for worst case)
+space    O(n)
+search O(log n)
+Insert O(log n)
+Delete O(log n)
+
+1. either node is red or black
+2. root is black
+3. all leaves (nil) are black (sometimes not relevant)
+4. if node is red both its children are black
+5. every path from a node to any of its descendants contains the same # of black nodes
+
+* longest path from root to any leaf is no more than 2x as long as shortest path from root to any other leaf in that tree
+* tree is roughly balanced
+
+A chain of 3 nodes is not possible in red black tree.
+
+>>> a path from root to the farthest leaf is no more than 2x as long as the path from root to the nearest leaf
+
+insertion begins by adding the node by BST insertion and coloring it red.
+
+repainting a black node red or vice versa or rotation.
+
+
+#AVL Tree (another BST)
+more balanced (rigid) than Red-Black. height-balanced
+slower insertion and removal but faster lookup.
+
+`the height of 2 child subtrees of any node differ by at most 1`
+balance factor = [-1,0,1]
+
+If it doesn't meet this property, rebalance is done through rotations
+
+`Example of Red-Black Tree that is not AVL`
+
+```
+        7 (B)
+       /  \
+    3 (B)  18 (R)
+           /  \
+        10 (B)  22 (B)
+      /    \       \
+    8 (R) 11 (R)   26 (R)
+```
+
+
+
+#Splay Tree (BST)
+frequently accessed nodes will move nearer to the root where they can be accessed more quickly. worst case height is O(n) w/ avg being O(log n)
+
+particularly useful for implementing cache and garbage collection algorithms
+
+disadv.
+height of splay tree can be linear.
+
+comlplications arise in a multithreaded env
+
+
+
+#B Tree
+generalization of BST that can have more than 2 children
+2-3 tree is a B tree that may have only 2 or 3 child nodes (subtree)
+
+you can store both key & data in internal and leaf nodes
+
+          7  16
+        /   |   \
+[1,2,5,6] [9, 12] [18, 21]
+
+-> 7 & 16 serve as keys.
+left subtree is smaller than 7. right subtree is greater than 16. middle is in between.
+
+d keys.
+d+1 is min branching factor
+
+insert:
+insert element to node. If # of elements is greater than d,
+take median and push it to the parent and split less than and greater than median to the 2 child nodes.
+
+all leaf nodes are same depth.
+
+
+adv.
+* keeps keys in sorted order for sequential traversing
+* uses hierarchical index to minimize # of disk reads
+* uses partially full blocks to speed insertions and deletions
+* keeps index balanced w/ recursive alg
+
+#B+ Tree
+variant of B Tree. copies of keys are stored in internal nodes. 
+`keys and records are stored in leaves.`
+
+in addition, a leaf node may include a ptr to the next leaf node to speed sequential access
+
+So a full scan of all objects, requires one linear pass through leaf nodes
+A B tree on other hand would require traversal of every level. A full tree traversal will likely involve more cache misses.
+
+Because B+ trees don't have data associated w/ interior nodes, more keys can fit in a page of memory. will require fewer cache misses to access data on leaf node
+
+#insert
+* if bucket is not full, add record
+* else split bucket. take median element and move it to parent
+
+B/B+ trees grow at the root. not at leaves
+
+#delete
+* find entry and remove it.
+* if it has fewer entries than it should (d/2) either merge w/ sibling or redistribute
+
+#bluk loading
+Just blindly inserting data is expensive since we have to do tree traversal each time.
+
+So sort your keys in ascending order. and insert them into the tree. the left side is done and spliting only occurs in right-most path from root.
+
+deletion is easier in B+ tree than B tree
+leaf nodes data are ordered in sequential linked list
+
+            [6]
+        /          \
+      [5]           [15, 18]
+      / \        /     |    \
+[1,3,4] [5] [6,10,12][15,16][18,20,25]
+
+B+ tree can be viewed as a B-tree in which every node contains only keys (not pairs) adn to which an additional level is added at the bottom with linked leaves
+
+
+#in DB
+time to read from disk drive involves seek time + rotational delay.
+
+sparse index = auxiliary index that contains first record in each disk block. 
+
+insertions and deletions can be slow in a sorted sequential file since you have to shift all those files.
+
+#in File Systems
+allows quick random access to arbitrary block in a particular file.
+
+efficient for block-oriented storage.
+
+Often used in File systems, because B/B+ trees have high fanout typically on order of 100 or more. which reduces number of I/O operations required to find an element in the tree
+
+
+uses B-trees
+Apple -> HFS+ 
+Microsoft -> NTFS
+MS-DOS -> FAT (file allocation table)
+
+
+
+
+

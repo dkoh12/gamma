@@ -1,0 +1,392 @@
+
+
+#DB
+
+#NoSQL (document based, key-value pairs)
+pro
+non-relational database means table-less. higher flexibility with newer data models. open source. easier scalability through support for Map Reduce. No need to develop database model. Saves lots of development time
+
+con
+lack of community. not as big as MySQL. lack of reporting tools for analysis and performance testing. `Doesn’t conform ACID` (Atomicity, Consistency, Isolation, Durability). Lack of standardization can cause problems during migration.
+
+NoSQL is preferred for E-Commerce where you can have different items and each item has different features. So instead having standard fixed columns, you can include any data.
+
+
+
+
+relation(table)
+- schema (description)
+- instance (data satisfying schema)
+attribute (col)
+tuple (record, row)
+
+schema is fixed
+instance can change.
+
+#CAP THEOREM
+In Scalability.txt in `System Design`
+
+#ACID
+* Atomicity - each transaction is all or nothing
+* Consistency - DB will be in valid state. data written is valid
+* Isolation - concurrent execution results as if transactions were executed serially
+* Durability - committed transaction will remain so even if DB crashes
+
+```
+CREATE TABLE Sailors (
+    sid INTEGER,
+    sname CHAR(20),
+    rating INTEGER,
+    age REAL,
+    PRIMARY KEY (sid)
+);
+
+CREATE TABLE Boats (
+    bid INTEGER,
+    bname CHAR(20),
+    color CHAR(10),
+    PRIMARY KEY (bid)
+);
+
+CREATE TABLE Reserves (
+    sid INTEGER,
+    bid INTEGER,
+    day DATE,
+    PRIMARY KEY (sid, bid, day),
+    FOREIGN KEY (sid) REFERENCES Sailors,
+    FOREIGN KEY (bid) REFERENCES Boats
+);
+```
+
+```
+SELECT [DISTINCT] <expression>
+FROM <table>
+[WHERE <predicate>]
+[GROUP BY <column list>]
+    [HAVING <predicate>]
+[ORDER BY <col list>] ;
+```
+
+relational vs non-relational
+
+#superkey
+Unique Key is a superkey. 
+
+#Compound keys = set of superkeys
+
+ex.
+possible superkeys
+    {id} <-  only this is minimal. So it is a candidate key.
+    {id, firstname}  <- compound key
+    {id, firstname, lastname}  <- compound key. also composite key
+
+#candidate key
+minimal superkey. There can be multiple candidate keys in the table. But only one candidate key can be a primary key. so only one primary key per table.
+
+think of it as candidate for a primary key.
+
+unique, irreducible, and non - null
+
+#primary keys
+unique. cannot be NULL. primary key is always one of the candidate keys
+
+#simple key
+candidate key with exactly one attribute
+
+#complex key 
+candidate key with more than 1 attribute?
+double check
+
+#compound key
+set of super keys that are not minimal. Each attribute of compound key is a simple key
+
+#composite key
+special type of candidate key formed by commbination of 2 or more columns.
+
+compound key + attribute that is not a superkey / simple key 
+{id, firstname, lastname}. {lastname} attribute is not a superkey
+
+#foreign keys
+allows cross-reference / joins among tables. does not necessarily have to be unique
+
+#index (think of index in back of a book)
+improves speed of data retrieval. Speeds up lookup `at cost of additional writes` and `storage space` to maintain index data structure.
+
+Having too many indices will ...
+- disk space is trivial
+- additional writes to update index is moderate
+- cost of additional locking can be severe
+
+index is a copy of selected columns of data from a table
+
+linear search is inefficient for large DB
+
+indexes are used to `police DB constraints` such as UNIQUE, EXCLUSION, PRIMARY KEY, FOREIGN KEY.
+
+usually DB implicitly indexes the PRIMARY KEY. Some DB require indices on FOREIGN KEYS. indices are usually implemented via B+ trees, and bitmaps
+
+B+ trees can improve query time to O(log n)
+
+#index w/ multiple columns
+
+http://use-the-index-luke.com/sql/where-clause/the-equals-operator/concatenated-keys
+
+More index = slower updates
+
+If you have 2 single column indexes, only one of them will be used
+If you have an index w/ 2 columns, query could be faster.
+A 2 column index can also be used as a single column index but only for the column listed first
+
+`Column Order of multi-column index matters!!!!`
+`First column is primary sort criterion`. 2nd column determines order only if 2 entries have same value in first column.
+
+in order to choose optimal index, also need know the column combination that appear in `where` clause
+
+(think of like a telephone directory / graduation pamphlet)
+-> sorted by last name, then first name for tie breakers
+
+2 col index does not support searching on 2nd column alone.
+
+concatenated index = 1 index across multiple columns.
+
+```
+image table w/ 3 columns: state, city, zip
+* sometimes search by state
+* sometime search by state and city
+* sometimes search by state, city and zip
+
+Then an index w/ state, city, zip will be used in all 3 of these searches.
+
+However, if you search by zip alone, then the above index will not be used. It will do a full table scan since zip is the 3rd column of the index. 
+
+You could create an index on Zip alone for this instance. But having more indices complicates it + slows down updates/deletes/inserts
+```
+
+
+#clustered
+only one clustered index can be created per table. row data is stored in order. 
+
+clusterd indices improve overall speed of retrieval but only where data is accessed sequentially or when range of items is selected.
+
+primary feature = ordering of physical data rows in disk in accordance with index blocks that point to them
+
+writing to a clustered index can be slower if you need to rearrange the data.
+
+#non clustered
+many non clustered index can be created per table.
+
+second list that has pointers to physical rows. 
+
+# DB normalization
+reducing duplicates / redundancy by organizing columns
+
+(BCNF) - Boyce-Codd Normal Form
+
+
+
+
+# Joins
+- Natural / Inner Join
+- Left Outer Join
+- Right Outer Join
+- Full Outer Join
+
+many-to-many link tables, create primary key on all fields
+
+representing many-to-many relationship is known as "junction table" or "link table".
+
+UserID | GroupID
+
+make composite key on {UserID, GroupID}
+-> Ensures same user cannot be connected to same group multiple times. Facilitates easy search for groups of the given user. `UserID` is at the leading edge of the index. All GroupID values associated to the same UserID are in a continuous range within B+ tree. So getting groups of the given user can be done by DBMS through simple index range scan
+
+make composite (primary) key on {GroupID, UserID}
+-> this facilitates quickly getting users of the given group
+
+https://stackoverflow.com/questions/23476623/table-composed-purely-of-foreign-keys
+
+
+
+http://www.techrepublic.com/article/relational-databases-defining-relationships-between-database-tables/
+
+#one-to-one relationship   (perfectly fine to use foreign key as primary key)
+
+#one-to-many relationship  (foreign keys allow duplicates)
+
+We have a primary key and a foreign key.
+The many should have the foreign key.
+
+for example, each zipcode can relate to many authors
+```
+Authors
+------
+FirstName (PK) | LastName (PK) | ZipCode (FK)
+```
+
+A state can have many cities but a city only belongs to one state
+
+Cities
+------
+City (PK)
+State (FK)
+
+State
+-----
+State (PK)
+
+#many-to-many relationship
+https://en.wikipedia.org/wiki/Associative_entity
+- associative table
+
+requires a linking table that contains primary key from each table as a foreign key
+
+Students and Courses
+
+```
+CREATE TABLE Users (
+    UserLogin varchar(50) PRIMARY KEY,
+    UserPassword varchar(50) NOT NULL,
+    UserName varchar(50) NOT NULL
+)
+
+CREATE TABLE Permissions (
+    PermissionKey varchar(50) PRIMARY KEY,
+    PermissionDescription varchar(500) NOT NULL
+)
+
+-- junction table (essentially a table of foreign keys)
+
+CREATE TABLE UserPermissions (
+    UserLogin varchar(50) REFERENCES Users (UserLogin),
+    PermissionKey varchar(50) REFERENCES Permissions (PermissionKey),
+    PRIMARY KEY (UserLogin, PermissionKey)
+)
+
+```
+
+
+```
+BooksAuthors (many-many)
+------------
+Title (FK) (Books.Title 1-many)
+ISBN (FK) (Books.ISBN 1-many)
+FirstName (FK) (Authors.FirstName 1-many)
+LastName (FK) (Authors.LastName 1-many)
+
+BooksCategories (many-many)
+---------------
+Title (FK) (Books.Title 1-many)
+ISBN (FK) (Books.ISBN 1-many)
+Category (FK) (Categories.Catgory 1-many)
+
+Books
+-----
+Title (PK)
+ISBN (PK)
+Price
+Publisher (FK) (Publishers.Publisher 1-many)
+
+Authors
+-------
+FirstName (PK)
+LastName (PK)
+ZipCode (FK) (ZIPCodes.ZIPCode 1-many)
+
+ZipCodes
+--------
+ZipCode (PK)
+City (FK) (Cities.City 1-many)
+
+Cities
+------
+City (PK)
+State (FK) (States.State 1-many)
+
+States
+------
+State (PK)
+
+Publishers
+----------
+Publisher (PK)
+
+Categories
+----------
+Category (PK)
+Description (FK)
+
+```
+
+
+```
+ORDERS TABLE
+-------------
+OrderID | CustomerID | EmployeeID | OrderDate | ShipperID
+---------------------------------------------------------
+10308         2            7        1996-09-18  3
+10309         37           3        1996-09-19  1
+10310         77           8        1996-09-20  2
+
+
+Customers Table
+---------------
+CustomerID | CustomerName | ContactName | Country
+-------------------------------------------------------------------------------
+1            Alfred         Maria         Germany
+2            Ana            Ana           Mexico
+3            Antonio        Antonio       Mexico
+
+```
+
+#Inner Join
+
+OrderID | CustomerID | EmployeeID | OrderDate | ShipperID | CustomerName | ContactName | Country
+
+-> 10308 2 7 1996-09-18 3 Ana Ana Mexico
+
+#Left Join
+
+-> 10309 37 3 1996-09-19 1  -   -    -
+-> 10310 77 8 1996-09-20 2  -   -    -
+-> 10308 2  7 1996-09-18 3 Ana Ana Mexico
+
+#Right Join
+
+1 Alfred Maria Germany -    -     -      -
+2 Ana    Ana   Mexico 10308 7 1996-09-18 3
+3 Anton  Anton Mexico  -    -     -      -
+
+
+# UNION vs UNION ALL
+Union selects distinct values by default. To allow duplicates use Union All
+Union combines 2 or more select statements. The 2 select statements must have same number of columns
+
+
+
+#adj list vs adj matrix
+adj list = O(E + V) space
+adj matrix = O(V^2) space
+
+for sparse/large graph adj list is better
+
+
+#Replication
+Copying an entire table or database onto multiple servers. Used for improving speed of access to reference records such as master data.
+
+#Partitioning
+Splitting up a large monolithic database into multiple smaller databases based on data cohesion. Example - splitting a large ERP database into modular databases like accounts database, sales database, materials database etc.
+
+#Clustering
+Using multiple application servers to access the same database. Used for computation intensive, parallelized, analytical applications that work on non volatile data.
+
+#Sharding
+Splitting up a large table of data horizontally i.e. row-wise. A table containing 100s of millions of rows may be split into multiple tables containing 1 million rows each. Each of the tables resulting from the split will be placed into a separate database/server. Sharding is done to spread load and improve access speed. Facebook/twitter tables fit into this category.
+
+
+
+
+
+
+
+
+

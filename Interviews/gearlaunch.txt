@@ -1,0 +1,20 @@
+
+- find palindrom substring
+- design patterns
+- water flowing down
+
+[2, 4, 6, 3, 4]
+
+when water flows down, the max area is 1 between 6 and 4 and the the height difference is 4-3 = 1
+
+
+
+
+
+----
+
+
+
+C3IOT
+-> stock span
+

@@ -1,0 +1,15 @@
+
+#Links
+http://www.geeksforgeeks.org/abstract-factory-pattern/
+
+#Difference Between "factory method" and "abstract factory"
+* The main difference between a “factory method” and an “abstract factory” is that the factory method is a single method, and an abstract factory is an object.
+* The factory method is just a method, it can be overridden in a subclass, whereas the abstract factory is an object that has multiple factory methods on it.
+* The Factory Method pattern uses inheritance and relies on a subclass to handle the desired object instantiation.
+
+
+
+
+
+
+

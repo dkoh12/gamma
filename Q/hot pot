@@ -1,0 +1,30 @@
+given unfair coin that comes up True p% times and False (1-p)% times,
+write function such that coin comes up True and False 50-50%
+
+bool rand_bit() {       
+  int counter = 0;
+  while ( true ) {
+    if( TRUE != rand_bit_p() ) { break; }
+    counter++;
+  }
+  return (counter %2);
+}
+
+bool rand_bit() {
+	while(1) {
+		bool a = rand_bit_p();
+		bool b = rand_bit_p();
+		if (a != b) // P( a = true and b=false) = P( a=false and b=true) = p * (1-p) assuming independence===> 1/2 for both true and false.
+		    return a;
+	}
+}
+
+bool randbit() {
+	bool a = rand_bit()
+	bool b = rand_bit()
+
+	while (1) {
+		if (a != b):
+			return a
+	}
+}

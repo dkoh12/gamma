@@ -1,0 +1,33 @@
+**Design Tiny URL**
+
+store <ID, URL> into the DB where ID = hash(URL) to get a random 7-character string.
+
+
+For example we store <"abcd123", "https://www.google.com"> into DB. In runtime when someone visits https://www.tinyurl.com/abcd123 we look up by ID and redirect to https://www.google.com
+
+
+
+GUID - Global Unique Identifier (128 bit number)
+also known as
+UUID - Universal Unique ID
+
+While probability that 2 UUIDs conflict is nonzero, it is so close to 0 that it is negligible. Information labeled with UUID has no duplicate so it can be later combined into a single DB w/o needing to resolve conflicts between identifiers.
+
+#UUID vs Incremental ID.
+
+When DB gets large. insert/query will be expensive if we use random string as ID. Since IDs are not sequential every time a new record is inserted, the DB needs to scan through the DB to look for the correct ID. However when using incremental IDs, insertion can be much easier - just go to the last page.
+
+So one way to optimize this is to use incremental IDs. THen hash the incremental IDs to a 7-char string. On flip side using incremental IDs will make mapping less flexible. We would have to look up mapping from 7-char string to incremental ID then look at mapping from incremental ID to redirected website.
+
+
+If we decide to index our DB, we have to store even more info like user ID, date entry, etc
+
+#Multiple Machines
+
+Distrbuted Key-Value store.
+
+If you store https://www.google.com on key "abcd123", you need to know which machine stores the DB that contains entry for this key. same idea as DB sharding.
+
+
+
+

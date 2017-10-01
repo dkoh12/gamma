@@ -1,0 +1,24 @@
+http://blog.gainlo.co/index.php/2016/04/19/design-facebook-chat-function/
+
+Common way to build messaging app is to have chat server that acts as the core of the whole system. When message comes, it won't be sent to receiver directly. Instead it goes to the chat server and is stored there first. And then, based on the receiver's status, the server may send the message immediately to him or send a push notification.
+
+* User A wants to send message "Hello World" to user B. A sends message to chat server
+* chat server receives messages and sends an ack to A meaning message is received.
+* 1. If B is online and connected to chat server, the server sends message to B
+* 2. If B is not online, chat server sends a push notification to B
+* B receives the messages and sends back an ack to the chat server
+* chat server notifies A that B received the message and updates in A's UI
+
+
+whole thing can be costly and inefficient once it's scaled to certain level. 
+
+Optimize?
+cost of delivering messages to receiver
+
+```
+chat server needs to spawn an OS process/thread, initialize HTTP request and close connection at the end. This happens to every message. 
+```
+
+1 solution is to use `HTTP persistent connection`. 
+in a nutshell, receivers can make HTTP GET request over a persistent connection that doesn't return until chat server provides any data back. Each request will be reestablished when it's timed out or interrupted
+

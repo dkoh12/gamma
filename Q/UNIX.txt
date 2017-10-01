@@ -1,0 +1,150 @@
+
+**Scripting and Regex**
+
+Shore up on UNIX.
+
+https://sites.google.com/site/steveyegge2/five-essential-phone-screen-questions
+
+Last year my team had to remove all the phone numbers from 50,000 Amazon web page templates, since many of the numbers were no longer in service, and we also wanted to route all customer contacts through a single page.
+
+Let's say you're on my team, and we have to identify the pages having probable U.S. phone numbers in them. To simplify the problem slightly, assume we have 50,000 HTML files in a Unix directory tree, under a directory called "/website". We have 2 days to get a list of file paths to the editorial staff. You need to give me a list of the .html files in this directory tree that appear to contain phone numbers in the following two formats: (xxx) xxx-xxxx and xxx-xxx-xxxx.
+
+How would you solve this problem? Keep in mind our team is on a short (2-day) timeline.
+
+```
+grep -l -R --perl-regexp "\b(\(\d{3}\)\s*|\d{3}-)\d{3}-\d{4}\b" * > output.txt
+```
+
+---
+
+Let's say you're on my team, and I've decided I'm a real stickler for code formatting. But I've got peculiar tastes, and one day I decide I want to have all parentheses stand out very clearly in your code.
+
+So let's say you've got a set of source files in C, C++, or Java. Your choice. And I want you to modify them so that in each source file, every open- and close-paren has exactly one space character before and after it. If there is any other whitespace around the paren, it's collapsed into a single space character.
+
+For instance, this code:
+
+
+foo (bar ( new Point(x, graph.getY()) ));
+
+Would be modified to look like this:
+
+foo ( bar ( new Point ( x, graph.getY ( ) ) ) ) ;
+
+I tell you (as your manager) that I don't care how you solve this problem. You can take the code down to Kinko's Copies and manually cut and paste the characters with scissors if you like.
+
+How will you solve this problem?
+
+```
+You'd do it with a Unix command like sed (using a regular expression), or do it in your editor using a regex, 
+```
+
+
++ grep
++ sed
++ find
++ man
+
+
+how to traverse a filesystem?
+function names for tokenizing ?
+manipulating strings?
+
+how does a compiler work?
+the output of a parser is a tree. 
+
+2 * (5 + 3)
+use parse tree.
+do it with polymorphism. Plus/ Minus node classes that each override eval() operation.
+
+Shell questions
+http://career.guru99.com/shell-scripting-interview-questions/
+
+* **what is a shell**
+shell is interface between user and kernel. Even though there can only be one kernel; a system can have many shells running simultaneously.
+
+* **file shortcuts on Linux?**
+shortcuts are created using "links" on Linux.
+
+* **Difference between soft link and hard link**
+Soft links are links to file name and can reside on different filesystem as well. 
+
+Hard links are links to inode of the file and has to be on the same filesystem as that of the file. 
+
+Deleting the original file deletes soft link but does not affect hard link.
+
+* **Given a file, replace all occurence of word 'ABC' with 'DEF' from 5th line till end in only those lines that contains word "MNO"**
+```
+sed -n '5,$p' file1 | sed '/MNO/s/ABC/DEF'
+```
+
+* **find out how long the system has been running**
+command "uptime"
+
+* **find out all information about specific user like his default shell, real life name, default directory, when and how long he has been using the system?**
+
+finger "loginName"
+
+* **How will you copy file from one machine to another**
+scp, ftp, rsync
+
+* **Connect to remote server and execute commands**
+telnet hostname -l user
+> enter password
+> write command to execute
+> quit
+
+* **Have 2 files and print records common to both**
+comm -12 file1 file2
+
+* **how will you connect to database server from linux?**
+isql -S serverName -U username -P password
+
+* **read all input to command from file1 direct all output to file2 and error to file3**
+
+command <file1 1>file2 2>file3
+
+where 0 = std input, 1= std output, 2=std error.
+
+* **given a file find count of lines containing word "ABC"**
+grep -c "ABC" file1
+
+* **how will you find total disk space used by specific user?**
+du -s /home/user1 where user1 = user we want
+
+* **set default rwx permission to all users on every file which is created in current shell**
+```umask 777```
+
+* **4 fundamental componenets of every file system on linux?**
+bootblock, super block, inode block, datablock
+
+bootblock: contains small program called "Master Boot Record" (MBR) which loads kernel during system boot up
+
+super block: contains all information about file system like size of file system, block size used by it, number of free data blocks and list of free inodes and data blocks.
+
+inode block: contains the inode for every file of file system along with all file attributes except its name
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

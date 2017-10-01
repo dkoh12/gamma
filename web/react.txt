@@ -1,0 +1,20 @@
+
+
+react + redux tutorial
+
+react is built by Facebook. react is the V in MVC
+
+https://survivejs.com/react/introduction/
+
+https://facebook.github.io/react/tutorial/tutorial.html
+
+https://facebook.github.io/react/docs/hello-world.html
+
+https://webapplog.com/reactive-web-stack/
+
+https://egghead.io/courses/getting-started-with-redux
+
+
+webpack
+
+https://survivejs.com/webpack/introduction/

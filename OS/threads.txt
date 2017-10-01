@@ -1,0 +1,107 @@
+process = basic program of execution
+processes can communicate with other processes via interprocess communication. Process switching needs to interact w/ OS
+
+threads share resources / files / code segment memory.
+each thread belongs in a process
+each thread has their own registers, program counter, and stack
+
+
+http://www.cs.iit.edu/~cs561/cs450/ChilkuriDineshThreads/dinesh's%20files/User%20and%20Kernel%20Level%20Threads.html
+
+
+
+adv of threads
+- minimize context switching time
+- provide concurrency
+- efficient communication
+- allows utilization of multiprocessor architecture to greater scale and efficiency
+
+
+user level thread
+
+user level threads are managed entirely by run-time system (user-level library). kernel knows nothing about user-level threads and manages them as if they were single threaded processes. user-level threads are small and fast. each thread represented by PC, register, stack, and small thread control block. Creating a new thread, switching between threads, and synchronizing threads are done via procedure call (ie no kernel involvement). 
+
+pro
+- fast to create and manage (managed entirely by user-level library)
+- user level thread does not require modification to OS
+- user level threads package can be implemented on OS that does not support threads
+- simple representation (PC, stack, register, TCB all stored in user process addr space)
+- fast & efficient (thread switching is not much more expensive than procedure call)
+- simple management (thread switching and synchronization can all be done without intervention of kernel)
+
+
+con
+ - User-Level threads are not a perfect solution as with everything else, they are a trade off. Since, User-Level threads are invisible to the OS they are not well integrated with the OS. As a result, OS can make poor decisions like scheduling a process with idle threads, blocking a process whose thread initiated an I/O even though the process has other threads that can run, and unscheduling a process with a thread holding a lock. Solving this requires communication between between kernel and user-level thread manager.
+- There is a lack of coordination between threads and operating system kernel. Therefore, process as whole gets one time slice irrespect of whether process has one thread or 1000 threads within. It is up to each thread to relinquish control to other threads.
+- User-level threads requires non-blocking systems call i.e., a multithreaded kernel. Otherwise, entire process will blocked in the kernel, even if there are runable threads left in the processes. For example, if one thread causes a page fault, the process blocks.
+
+
+
+kernel level thread
+
+thread operations in kernel. OS schedules all threads in system. kernel maintains thread table to track all threads in system and process table to track all processes in system. OS provides syscalls to create & manage threads
+
+pro
+- Because kernel has full knowledge of all threads, Scheduler may decide to give more time to a process having large number of threads than process having small number of threads.
+- kernel can simultaneously schedule multiple threads from the same process on multiple processers
+- if one thread in a process is blocked, the kernel can schedule another thread of the same process (klt esp good for apps that frequently block)
+- kernel routines can be multithreaded
+
+con
+- generally slower & inefficient to create and manage than user level threads
+- transfer of control from one thread to another w/in same process requires a mode switch to kernel
+- Since kernel must manage and schedule threads as well as processes. It require a full thread control block (TCB) for each thread to maintain information about threads. As a result there is significant overhead and increased in kernel complexity.
+
+
+kernel level threads make concurrency much cheaper than process because less state to allocate and initialize. still kernel level threads suffer from overhead. 
+
+supporting threads at kernel level means OS kernel itself is multithreaded
+
+
+
+#Multithreading Models
+
+#Many to One
+maps many user threads to one kernel thread
+`adv`
+- portable
+- easy to do w/ few systems dependencies
+`disadv`
+- cannot take advantage of parallelism
+- may have to block for synchronous I/O. when a user thread makes a blocking syscall, entire process blocks
+
+#One to One
+map one user thread to one kernel thread
+`adv`
+- exploit parallelism, blocking syscalls
+- threads can run on multiple processors
+`disadv`
+- thread creation involves LWP creation
+- each thread takes up kernel resources. creating a user means creating a kernel thread
+- limiting total number of threads
+
+#Many to Many (best of both worlds)
+maps many user threads to same or less number of kernel threads
+`adv`
+- if a user thread is blocked, we can schedule other user threads to other kernel threads. Thus system doesn't block if a particular thread is blocked
+
+
+
+#Multiprocessor
+
+EACH CORE HAS ITS OWN LOCAL CACHE!!!
+That is why `virtual` keyword is needed in Java which solves the problem when 2 threads of the same process run on different cores and thus have different caches, the value of a shared-variable may be different. 
+
+-->>> Distributed Memory
+
+https://superuser.com/questions/828417/does-multiple-cores-in-cpu-affect-how-many-programs-i-can-run
+
+http://web.cs.ucla.edu/classes/spring16/cs111/supp/multiprocessor.html
+
+https://www.cs.indiana.edu/classes/b673/notes/architecture.html
+
+hyperthread = each core has 2 independent set of registers so that it can run 2 independent threads. So when one thread gets blocked, another thread can run.
+
+
+
+

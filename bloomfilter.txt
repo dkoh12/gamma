@@ -1,0 +1,57 @@
+
+#bloom filter
+
+Space efficient probabilistic data structure
+
+more elements => higher probability of false positives
+
+
+A data structure that is used to test when an element is a member of a set. False positive members are possible (element not in the set, but the query says yes, it is there). However, false negatives are not possible (element is in the set, the query will always return that yes, it is there).
+
+One could use a hash table to do something similar, but a bloom filter is more space efficient. It may be used in firewalls to check if an IP address has been seen before.
+
+How it works:
+(0) Allocate an array that stores m bits (0 and 1)
+(1) Use several independent hash functions to transform each element into a bit
+for each kth hash function:
+        if the bit after hashing 1:
+           turn on that bit in the array
+
+Now, if we want to test if an element is in an array:
+for each kth hash function:
+     hash that object to a bit
+         if the bit is 0:
+            object not in array
+(all bits are 1) => object in array
+
+------------------------------------
+
+array of m bits set to 0.
+k hash functions each of which maps some set element to one of the m array positions
+k < m
+
+to `add` an element, feed it to k hash functions to get k array positions
+set the bits at all of these positions to 1
+
+to `query` an element, feed it k hash functions to get k array positions. If any of the bit is 0, element is not in set.
+
+If all bits are one, either element is in the set or false positive (another element turned the bit on)
+
+removing an element from Bloom filter is impossible since it would create false negative. Another element may be mapped to an array index and setting the that position to 0 would mean that that element is not in the set when it actually is
+
+STRONG SPACE ADVANTAGE over self-balancing binary search trees, tries, hashtables, arrays, linked list
+All these store the data items themselves. Whereas bloom filter does not store the data items at all. And a separate solution is needed for actual storage.
+
+If hash table ignore collisions and only store whether each bucket contains an entry, effectively they become Bloom filters w/ k=1
+
+Time to add or query is O(k). independent of number of items already in set.
+In hardware, k lookups can be parallelized
+
+
+
+
+
+
+
+
+

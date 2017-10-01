@@ -1,0 +1,91 @@
+
+https://stackoverflow.com/questions/2332765/lock-mutex-semaphore-whats-the-difference
+
+#critical region
+region of memory shared by 2 or more processes
+
+#lock
+Lock allows only thread to enter the critical section. Lock is not shared with any other processes. All other threads are put to sleep.
+
+no concept of thread ownership. no priority donation.
+
+#mutex (mutex semaphore) (essentially same as binary semaphore)
+Mutex is same as a lock but can be system wide (shared by multiple processes)
+`Kernel object` used for allowing execution of just 1 active thread from many others, among different processes. Other non selected threads are put to sleep.
+This object supports thread ownership, thread termination notification, not recursive and "priority inversion avoidance"
+
+
+A mutex is essentially the same thing as a binary semaphore and sometimes uses the same basic implementation. The differences between them are:
+
+Mutexes have a concept of an owner, which is the process that locked the mutex. Only the process that locked the mutex can unlock it. In contrast, a semaphore has no concept of an owner. Any process can unlock a semaphore.
+
+Unlike semaphores, mutexes provide priority inversion safety. Since the mutex knows its current owner, it is possible to promote the priority of the owner whenever a higher-priority task starts waiting on the mutex.
+
+Mutexes also provide deletion safety, where the process holding the mutex cannot be accidentally deleted. Semaphores do not provide this.
+
+
+#semaphore (counting semaphore)
+semaphore does the same as a mutex but allows `(a group)` x number of threads to enter, this can be used for example to limit the number of cpu, io, or ram intensive tasks running at the same time. 
+
+maintains count between 0 and some max value, limiting number of threads that are simultaneously accessing a shared resource
+
+A Semaphore is a lower-level object. You might well use a semaphore to implement a monitor. A semaphore essentially is just a `counter`. When the counter is positive, if a thread tries to acquire the semaphore then it is allowed, and the counter is decremented. When a thread is done then it releases the semaphore, and increments the counter.
+
+If the counter is already zero when a thread tries to acquire the semaphore then it has to wait until another thread releases the semaphore. If multiple threads are waiting when a thread releases a semaphore then one of them gets it. The thread that releases a semaphore need not be the same thread that acquired it.
+
+Interprocess capability however is not very safe since it lacks the following 'mutex' attributes: thread termination notification, recursion, priority inversion avoidance
+
+You also have read/write locks that allow either unlimited number of readers or 1 writer at any given time
+
+#spinlock
+locks that busy waits. no thread sleep. mostly used at kernel level. inefficient for user level code.
+
+#monitor
+`object designed to be accessed from multiple threads`. So member functions/methods will enforce mutual exclusion. 
+
+
+
+
+
+
+#Semaphore 
+
+A semaphore is a synchronization tool for managing concurrent processes for complex mutual exclusion problems.
+
+
+Semaphores are of two types −
+
+1. Binary semaphore (take value 0 & 1 only) (mutex)
+2. Counting semaphore (take nonnegative integer values) (semaphore)
+
+
+Two standard operations, wait and signal are defined on the semaphore. Entry to the critical section is controlled by the wait operation and exit from a critical region is taken care by signal operation. The wait, signal operations are also called P and V operations. The manipulation of semaphore (S) takes place as following:
+
+The wait command P(S) decrements the semaphore value by 1. If the resulting value becomes negative then P command is delayed until the condition is satisfied.
+
+The V(S) i.e. signals operation increments the semaphore value by 1.
+
+Mutual exclusion on the semaphore is enforced within P(S) and V(S). If a number of processes attempt P(S) simultaneously, only one process will be allowed to proceed & the other processes will be waiting.
+
+
+P(S) or wait(S): 
+If S > 0 then
+   Set S to S-1
+Else
+   Block the calling process (i.e. Wait on S)
+
+V(S) or signal(S): 
+If any processes are waiting on S
+   Start one of these processes
+Else
+   Set S to S+1
+
+
+wait and signal are atomic
+
+Thus semaphore is a simple yet powerful mechanism to ensure mutual exclusion among concurrent processes.
+
+
+
+
+

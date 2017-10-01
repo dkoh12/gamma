@@ -1,0 +1,39 @@
+**Design e-commerce website**
+
+Schema: Product, Users, Order
+
+Product: Name, Stock, Description, Category, Price, Product ID
+
+Better approach is to have a *Category* table so each product can have category ID.
+
+Order: Product ID, User ID, timestamp, status
+
+
+#NoSQL in eCommerce
+NoSQL DB tries to store bunch of things in a single row instead of multiple tables. So when we fetch a user, not only will we get all the personal information but also his purchase history.
+
+With more products, the Product table will have tons of columns. 
+
+However with NoSQL DB, like MongoDB, supports huge number "columns". It's like storing JSON object per row.
+
+
+#Concurrency
+lock. <- costly. need to create and release lock for every data
+
+**pessimistic concurrency control (PCC)**
+block an operation of transaction. 
+
+**optimistic concurrency control (OCC)**
+allow operation without blocking. But abort it to prevent violation. Aborted transaction is immediately restarted and incurs obvious overhead
+
+For systems that are unlikely to have conflicts, optimistic concurrency control may be better. When resources are frequently accessed by multiple clients, then blocking them may be better.
+
+In Amazon there are so many products that it's not frequent that multiple people access the same product simultaneously. As a result OCC is better
+
+#Availability.
+Have multiple data replica. High availability means less consistency. 
+
+
+
+
+

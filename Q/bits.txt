@@ -1,0 +1,44 @@
+
+Bits and Bytes
+
+2^5 = 32
+2^10 = 1024
+2^16 = 65,536
+
+and, or, not, xor
+
+bitwise and vs logical and
+(byte, short, int, long, float, double, char, boolean). how much space is allocated.
+
+difference between signed and unsigned types and the range.
+
+
+A good weeder question for this area is:
+```
+Tell me how to test whether the high-order bit is set in a byte.
+```
+
+Another, more involved one is:
+```
+Write a function to count all the bits in an int value; e.g. the function with the signature int countBits(int x)
+```
+
+Another good one is:
+```
+Describe a function that takes an int value, and returns true if the bit pattern of that int value is the same if you reverse it (i.e. it's a palindrome); i.e. boolean isPalindrome(int x)
+```
+
+
+sizeof(). when to use it and why.
+count in hexadecimal. convert between hex, binary, oct
+
+
+
+
+
+
+
+
+
+
+

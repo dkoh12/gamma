@@ -1,0 +1,34 @@
+geeks links
+
+
+http://www.geeksforgeeks.org/gate-cs-notes-gq/
+
+OS
+http://www.geeksforgeeks.org/operating-systems/
+https://discuss.leetcode.com/category/767/operating-system
+
+DBMS
+http://www.geeksforgeeks.org/dbms/
+https://leetcode.com/problemset/database/
+
+company problems
+http://practice.geeksforgeeks.org/company-tags
+
+Algorithms
+http://www.geeksforgeeks.org/fundamentals-of-algorithms/#AnalysisofAlgorithms
+https://leetcode.com/problemset/algorithms/
+
+Top Algorithms in Interviews
+http://www.geeksforgeeks.org/top-10-algorithms-in-interview-questions/
+
+
+System Design
+http://highscalability.com/
+http://blog.gainlo.co/index.php/category/system-design-interview-questions/
+
+//https://www.quora.com/How-do-I-prepare-to-answer-design-questions-in-a-technical-interview?redirected_qid=1500023
+
+
+
+
+

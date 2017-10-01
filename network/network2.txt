@@ -1,0 +1,281 @@
+
+#CS 168 Notes
+
+
+when packets arrive at a router, routing table determines which outgoing link the packet is sent on
+
+switches / routers have **physical** ports:
+- place where links connect to switches
+
+network stacks have **logical** ports:
+- logical places where applications connect to stack
+
+`ctr plane` - mechanism to compute routing tables
+`data plane` - mecahism to forward packets using routing tables
+
+
+network
+- delivers packets from host to host (based on addr)
+
+network stack (OS)
+- deliver packets to appropriate socket (based on port)
+
+delays:
+- transmission delay - getting packet into the network (how much data you send)
+- propagation delay - sending the packet from one end to another (distance)
+- processing delay - how fast routers process packet header
+- queueing delay - packets sits in a queue before its processed
+
+# Layering
+Application (HTTP/SMTP) - provide network support for apps
+Transport (UDP/TCP) - end to end delivery
+Network (IP, WAN) - global delivery (link state routing)
+Datalink (ethernet, MAC, LAN) - local delivery (forwarding. spanning tree)
+Physical - bits on wire
+
+routers = bottom 3 layers. 
+switches = bottom 2 layers
+
+**end-to-end** principle
+where to put functionality - no reliability in network
+**fate-sharing**
+where to put state - no per-flow state in network
+
+#Avoid Loops
+Use Minimum Spanning Tree (MST) to find paths to route.
+- no deadends
+- no loops
+
+#tree-like topology  (LAN)
+- learning switches (L2)
+- map incoming addr to incoming port. flood packet to rest of outgoing ports
+
+#Global View (Intradomain)
+- Link-state and SDN routing
+- SDN = centralized server
+- link-state = every router knows its local link state. flood its link state until it converges to one global link state
+
+#Distributed Computation (Interdomain)
+- minimize **distance vector**
+- BGP (path vector)
+    + problem w/ path vector is every router can make its own decision. might not converge
+
+
+when you need more flexibility, add a layer of indirection
+when you need more scalability, add hierarchy
+
+#IP addr
+<back then>
+Network addr: (/8) first 8 bits
+host addr: last 24 bits
+
+Classes
+**Class A**: /8 (top bit = 0)
+- 126 nets (2^8-1)
+- ~16 M hosts (2^24)
+**Class B**: /16 (top bits = 10)
+- ~16K nets (2^16)
+- ~65K hosts (2^16)
+**Class C**: /24 (top bits = 110)
+- ~2 M nets (2^23)
+- 254 hosts (2^9)
+**Class D**: (top bits = 1110)
+**Class E**: (top bits = 11110)
+
+Problem is only comes in 3 sizes.
+Routers may need state for many class C's
+wasted address space
+
+`today` CIDR = Classless Interdomain Routing
+flexible division between network and host addresses
+**must specify both address and mask**
+mask clarifies boundary between addresses lie
+
+IP addr = network addr + host addr
+
+easy to add new hosts. doesn't require new forwarding entry
+network addr = subnet
+
+network takes network addr and sends it to right subnet. Then the ISP knows how to reach host using host addr
+
+Longest Prefix Matching 
+
+multihoming???
+aggregation 
+
+#Discovery Protocols (link layer)
+*Broadcast*
+*Cache*
+*Soft state* (TTL / eventually forget past)
+Address discovery (ARP)
+Hosts get address (DHCP)
+- own IP addr & mask
+- IP addr of DNS server
+- IP addr of local router
+
+#DHCP
+1. client broadcasts DHCP `discovery` (what's my ip?)
+2. 1 or more DHCP servers respond w/ DHCP `"offer"`` ("here's possible ips")
+3. client broadcasts DHCP `request` msg (ok I choose this one)
+4. selected DHCP server responds w/ `ACK` (ok)
+
+must traverse L2 networks (spanning tree)
+need to know which L2 addresses to use (ARP)
+
+MAC addr - 48 bits in hex.
+-first 24 bits - Blocks
+-last 24 bits - Adapter 
+
+#NAT (middlebox)
+when we don't have enough addresses (NAT)
+- enables many hosts to share a single address. 
+**uses port numbers to multiplex single address**
+
+broadcast: 255.255.255.255/32
+localhost: 127.0.0.0/8 or 127.0.0.1/32
+link-local: 169.254.0.0/16
+private addr: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16
+
+
+DHCP & DNS are at application layer. Both use UDP
+UDP port 67
+datastream
+
+protocol
+TCP  - 6
+UDP - 17
+
+# what happens when you type Google.com in the browser
+1. host is up w/ given MAC addr
+2. broadcasts ARP message to discover all L2 addresses in the LAN.
+3. If dest host is in LAN, send directly to it using L2 address
+4. broadcasts a DHCP request to get back DNS server, ip of local router, and ip addr & mask, 
+5. DNS the host domain
+6. If dest host is not in LAN, send to gateway router. If your IP and dest's IP and mask to the same network, they are on the same L2 network
+7. Establish a TCP connection via 3-way handshake
+8. Encrypt the channel using SSL/TLS
+9. send a http request and get back an http response
+10. fetch other content on the web page such as images, links, files and lookup those links via DNS and fetch them
+11. display full web page
+
+
+congestion congrol: not overloading network
+flow control: not overloading receiver
+
+#TCP bytestream
+- reliable, in order delivery
+- connection oriented
+- flow ctr / congestion ctr
+
+checksums to detect corruption.
+timeouts / retransmissions
+cumulative ACKs, sliding window flow ctr
+
+TCP Segment
+
+3 way handshake
+#SYN ->
+SeqNum = X
+#SYN-ACK <- 
+SeqNum = Y, ACK = X + 1
+#ACK ->
+ACK = Y + 1
+
+if takes too longs, abort and try new socket
+
+#RST
+abrupt disconnection
+no ack back
+#FIN ->
+#FINACK <-
+#ACK ->
+
+for UDP ports (SOCK_DGRAM) 
+OS stores (local port, local IP addr) <-> socket
+receiver doesn't have to send back an ACK
+
+for TCP ports (SOCK_STREAM)
+(local port, local IP, remote port, remote IP) <-> socket
+receiver sends back an ACK
+
+#DNS
+TLD (top level domains) (.com/.edu)
+- load balancing: reducing latency by picking nearby servers
+Zones (berkeley)
+Authoritative DNS server (stores mapping RR <resource records>)
+
+UDP port 53
+
+why made this way?
+- scalable 
+- highly available -replicate data
+- extensible: can add TLD
+- autonomous administration
+
+name could map to multiple IP.
+also multiple names for same addr
+
+DNS cache. TTL
+
+#URL syntax
+protocol://hostname[:port]/directorypath/resource
+
+#HTTP
+runs over TCP, port 80. stateless
+
+stateless
+adv:
+- failure handling is easier
+- order of requests doesn't matter (to HTTP)
+- can handle higher rate of requests
+
+Use cookies to preserve state.
+#Cookies: client-side state maintenance
+client stores a small state. Send cookie with every http request.
+cookies can provide authentication
+
+HTTP - we do this via caching & replication
+* fast downloads
+* High availability
+* avoid network overload
+
+* cost effective delivery infrastructure (web hosting/ CDN/ data centers)
+
+#Connections
+* Concurrent (multiple connections in parallel)
+    - does not necessarily maintain order of responses. can overload network
+* persistent
+    - maintain tcp connection across multiple requests
+    - avoids overhead of setting & tearing down connection
+* Pipelines
+    - batch requests and responses to reduce number of packets 
+
+#Replicate popular websites across many machines
+* spreads loads on servers
+* places content closer to clients
+* helps when content isn't cacheable
+
+Direct clients to particular replica
+* load balancer 
+* pair clients w/ nearby servers
+
+#CDN (Content Delivery Network)
+combination of caching and replication as a service
+
+#ICMP (Internet Control Message Protocol)
+sent by routers (or hosts) to report trouble
+essentially Internet's police
+
+TCP detects loss by
+- timeout
+- 3 duplicate ACKS
+
+deal with congestion by adjusting window size
+AIMD (additive increase, multiple decrease)
+increase window size slowly. decrease it rapidly
+
+
+
+
+
+

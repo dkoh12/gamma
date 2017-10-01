@@ -1,0 +1,27 @@
+**How to Design Twitter**
+
+PART I
+http://blog.gainlo.co/index.php/2016/02/17/system-design-interview-question-how-to-design-twitter-part-1/
+
+
+
+1. Data Modeling
+2. How to serve feeds
+
+Data Modeling - Use relational DB, define `user` object and `feed` object. Two relations are necessary: 1. user can follow each other, 2. each feed has a user owner
+
+Serve feeds - fetch feeds from all people you follow and render them by time
+
+# when users follow a lot of people, fetching and rendering all their feeds can be costly. How to improve this?
+
+Twitter has infinite scroll feature. Each time fetch the most recent N feeds instead of all of them. 
+
+How should pagination be implemented?
+
+Consider cache to speed things up
+
+# detect fake users?
+
+Machine Learning. Identify several features like registration data, number of followers, number of feeds, etc and build a machine learning system to detect if user is fake.
+
+

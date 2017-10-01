@@ -1,0 +1,177 @@
+
+
+**Network Interview Questions**
+
+#Layers
+Application (HTTP)
+Presentation
+Session
+Transport (TCP/UDP)
+Network (IP. data routing. routers. packet switch. network congestion)
+Data Link (ethernet)
+Physical (bits)
+
+#backbone network 
+centralized infrastructure designed to distribute different routes and data to various networks. handles management of bandwidth and various channels
+
+LAN = local area network
+WAN = Wide Area Network
+
+#point to point link
+direct connection between 2 computers on a network
+
+#subnet mask (32 bits like IP)
+subnet mask is combined w/ IP addr in order to identify 2 parts:extended network addr and host addr. 
+
+#data encapsulation
+breaking down data into smaller chunks / packets before being transmitted across network
+
+#VPN = Virtual Private Network
+technology that allows secure tunnel to be created across a network. VPNs allow you to establish a secure dial-up connection to a remote server
+
+#NAT = Network Addr Translation. 
+Provides a way for multiple computers on common network to share a single connection to the Internet. (essentially happens because IP src/dst addr are only 32 bits so only 2^32-1 = 4.3 billion computers. limited)
+
+#Different ways to secure a computer network?
+firewalls.
+user authentication
+installing anti-virus programs
+
+#RIP = Routing Information Protocol
+used by routers to send data from one network to another. It efficiently manages routing data by broadcasting its routing table to all other routers w/in a network. It determines the network distance in units of hops
+
+#NIC = Network Interface Card
+Peripheral card attached to a PC in order to connect to a network. Every NIC has its own MAC addr
+
+#What are proxy servers and how do they protect computer networks?
+
+#What is a private IP addr?
+Private IP addr are assigned for use on intranets. They are used for internal networks and not routable on public networks. 
+
+#NOS
+Network Operating System. main task is to provide network connectivity to a computer
+
+#DOS
+Denial-of-Service attack. Often done by overloading server so it cannot process legitimate traffic.
+
+#OSI (Open Systems Interconnect)
+serves as reference model for data communication. made up of 7 layers
+
+#advantage of address sharing?
+By using address translation instead of routing, address sharing provides inherent security benefits. host PCs can only see public IP addresses of external interface on computer that provides address translation and not private addresses on internal network
+
+#MAC addr
+Media Access Control. Physical Address / Ethernet Addr. Made up of 6-byte parts
+
+#how can you identify IP class of a given IP addr?
+by looking at first octet of any given IP addr. 
+If first octet begins w/ 0 bit -> Class A
+If it begins w/ 10 bit -> Class B
+If it begins w/ 110 bit -> Class C
+
+#main purpose of OSPF (Open Shortest Path First)?
+link-state routing protocol that uses routing tables to determine best possible path for data exchange
+
+#gateways
+provide connectivity between 2 or more network segments. 
+
+#default gateways
+provide means for local networks to connect to external network. Usually the default gateway is the address of the external router port.
+
+#star topology
+consists of a central hub that connects to nodes. easy to setup and maintain. disadv is when the central hub is damaged, entire network is unusable
+
+#examples of private network address
+10.0.0.0 w/ subnet mask of 255.0.0.0
+172.16.0.0 w/ subnet mask of 255.240.0.0
+192.168.0.0 w/ subnet mask of 255.255.0.0
+
+#tracert
+windows program that is used to trace route taken by data from router to destination network. also shows number of hops taken.
+
+#hybrid network
+setup that uses both client-server and peer-to-peer architecture
+
+#disadvantage of peer - peer network
+when you are accessing resources that are shared by one of the workstations on the network, that workstation takes a performance hit
+
+#ARP (Address Resolution Protocol)
+Map known IP addr to MAC layer addr
+
+#DHCP (Dynamic Host Configuration Protocol)
+assign IP addr to devices across network. First checks for next available address not yet taken by any device, then assigns this to a network device.
+
+#number of network IDs in Class C network?
+Class C network -> # of usable Network ID bits is 21
+Number of possible Network IDs = 2^21 = 2 billion.
+Number of host IDs per network ID = 2^8-2 = 254
+
+#ICMP (Internet Control Message Protocol)
+provides messaging protocols w/in TCP/IP stack
+
+#PING 
+checks connectivity of network devices on network
+
+#DNS (Domain Name System) 
+Maps names to TCP/IP addr
+
+#Maximum networks and hosts in Class A, B, C?
+Class A -> 126 possible networks and 16,777,214 hosts
+Class B -> 16,384 possible networks and 65,534 hosts
+Class C -> 2,097,152 possible networks and 254 hosts
+
+
+#unicasting
+message is sent from source to single dest node.
+
+#anycasting
+message is sent from any source to given dest nodes. Used a lot in CDN (content delivery systems)
+
+#multicast routing
+targeted form of broadcasting that sends message to selected group of user instead of to all users on subnet.  (like video conferencing / updating something on CDN servers w/ replica of same data)
+
+#broadcast
+sent to all nodes.
+DHCP, ARP
+
+
+#What happens when you type a URL in a web browser?
+A URL may contain request to HTML, image file or any other type.
+
+1. If content of the typed URL is in cache and fresh, then display the content.
+2. Else find IP address for the domain so that a TCP connection can be setup. Browser does a DNS lookup.
+3. Browser needs to know IP address for a url, so that it can setup a TCP connection.  This is why browser needs DNS service.  Browser first looks for URL-IP mapping browser cache, then in OS cache. If all caches are empty, then it makes a recursive query to the local DNS server.   The local DNS server provides the IP address.
+4. Browser sets up a TCP connection using three way handshake.
+5. Browser sends a HTTP request.
+6. Server has a web server like Apache, IIS running that handles incoming HTTP request and sends a HTTP response.
+7. Browser receives the HTTP response and renders the content. 
+
+#DHCP
+1. The idea of DHCP (Dynamic Host Configuration Protocol) is to enable devices to get IP address without any manual configuration.
+2. The device sends a broadcast message saying “I am new here”
+3. The DHCP server sees the message and responds back to the device and typically allocates an IP address. All other devices on network ignore the message of new device as they are not DHCP server.
+
+In Wi Fi networks, Access Points generally work as a DHCP server.
+
+#ARP
+ARP stands for Address Resolution Protocol. ARP is used to find LAN address from Network address. A node typically has destination IP to send a packet, the nodes needs link layer address to send a frame over local link. The ARP protocol helps here.
+
+1. The node sends a broadcast message to all nodes saying what is the MAC address of this IP address.
+2. Node with the provided IP address replies with the MAC address.
+
+Like DHCP, ARP is a discovery protocol, but unlike DHCP there is not server here.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

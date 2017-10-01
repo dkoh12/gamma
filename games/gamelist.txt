@@ -1,0 +1,10 @@
+
+back tracking sudoku solver
+http://algorithms.tutorialhorizon.com/backtracking-sudoku-solver/
+
+
+rat in a maze puzzle
+http://algorithms.tutorialhorizon.com/backtracking-rat-in-a-maze-puzzle/
+
+knight's tour
+http://algorithms.tutorialhorizon.com/backtracking-knights-tour-problem/

@@ -1,0 +1,157 @@
+**Cracking the Coding Interview System Design**
+
+**Social Network**
+How would you design data structures for a very large social network like Facebook or LinkedIn? Describe how you would design an algorithm to show the shortest path between two people (eg me-> bob -> ajay -> you)
+
+1. `simplify problem.`
+Do bidirectional BFS (bfs from src S and bfs from dst D) rather than just one bfs from src.
+
+normal bfs: O(k+k^2) (S has k friends and k looks up k friends)
+bidirectional bfs: O(2k) (S has k friends and D has k friends )
+
+2. `handle millions of users`
+spread data among many machines. Replace list of friends with list of IDs. 
+
+* for each friend ID, get *machine_index*
+* go to machine at *#machine_index*
+* On that machine, find friend
+
+3. `Optimize`
+a. reduce machine jumps by batching friends since machine jumps are expensive. (ie. if 5 of my friends live on one machine, I should look them up all at once)
+
+b. smart division of people and machines. People are much more likely to be friends with people who live in same country as they do. Divide people across machines by country, city, state, and so on. This will reduce number of jumps
+
+BFS usually requires marking a node as "visited". however we can use a hashtable to lookup whether that node has been visited or not
+
+**Follow-Up Questions**
+* In real world, servers fail. How does this affect you?
+* How could you take advantage of caching?
+* Do you search until the end of the graph (infinite)? How do you decide when to give up?
+* In real life, some people have more friends of friends than others, and are therefore more likely to make a path between you and someone else, How could you use this data to pick where to start traversing?
+
+
+
+**Web Crawler**
+If you are designing a web crawler, how would you avoid getting into infinite loops?
+
+Infinite loops occur when there are cycles. To prevent infinite loops, we need to detect cycles. Can use Hash table. 
+
+Crawl web using BFS. Each time we visit a page, we gather all of its links and insert them to the end of the queue. If we already visited it, ignore it
+
+Problem is no perfect way to define a *"different"* page.
+-> one way to tackle this is to have some sort of estimation for degree of similarity. If based on content and url, page is deemed sufficiently similar to other pages, we *deprioritize* crawling its children.
+
+We have a DB that stores list of items we need to crawl. On each iteration, we select highest priority page to crawl, then do the following:
+
+1. open page and create signature of page based on specific subsections of page and its url
+2. query DB to see whether anything w/ this signature has been crawled recently
+3. if something with this signature has been crawled, insert this page back into DB at low priority
+4. if not crawl the page and insert its links into the DB.
+
+This won't "finish" crawling the web but we will avoid getting stuck in a loop. If we want to allow for the possibility of "finishing", set a minimum priority that a page must have to be crawled.
+
+**Duplicate URLS**
+You have 10 Billion urls, how do you detect duplicate documents?
+
+How much space does it take up? We probably cannot keep all of it in memory. But if we could then, create a hash table that maps each url to `true` if found elsewhere in the list.
+
+**#Solution 1: Disk Storage**
+`1st pass:` Split list of urls into 4000 chunks of 1GB each. Divide up the urls based on their hash. 
+
+x = hash(url) % 4000 
+
+this way all urls with same hash value would be in the same file. 
+`2nd pass:` Load each chunk into memory, create hash table of urls and look for duplicates
+
+**#Solution 2: Multiple Machines**
+Do same procedure but use multiple machines. Map Reduce? 
+
+Pro: parallelize operation such that all chunks are processed simultaneously.
+
+Con: require many machines to operate perfectly. Need to consider how to handle failure. 
+
+
+
+**Cache**
+Web Server for search enginer has 100 machines to respond to search queries which may call `processSearch(string query)` to another cluster of machines to actually get the result. The machine which responds to given query is chosen at random so you cannot guarantee that the same machine will always respond to the same request. The method `processSearch` is very expensive. Design cache mechanism to cache results of the most recent queries. 
+
+Cache needs to replaced old data with new data and also provide efficient lookups.
+
+linked lists provide easy way to replace old data
+hash table provide efficient way to lookup
+
+#One machine
+So have both. 
+
+#Multiple Machines
+* `Option 1`: Each machine has its own cache
+
+if A is sent 2x to machine 1, 2nd time is a cache. 
+If A is sent to machine 1 and machine 2. They are independent and treated as fresh queries. 
+
+-> quick but less effective optimization tool as many repeat queries would be treated as fresh queries
+
+
+* `Option 2`: Each machine has a copy of the cache
+
+When new items are added to cache, they are sent to all machines. Entire data structure - linked list and hash table - would be duplicated. 
+
+Common queries would nearly always be in cache but updating cache means firing off data to N different machines.
+
+Each item would take O(N) space and time so our cache would hold much less data
+
+
+* `Option 3`: Each machine stores a segment of the cache
+
+Divide up the cache so that each machine holds a different part of it. 
+That is machine `i` needs to lookup query, machine `i` would figure out which machine holds this value and then ask machine `j` to look up query in `j`s cache.
+
+how would machine `i` know which machine holds this part of hash table?
+
+-> assign queries based on formula `hash(query) % N`. Then `i` only needs to apply this formula to find machine `j`
+
+
+**E-Commerce**
+list best-selling products `overall` and by `category`. For example android phone may be #2 in "smart phone category" but #100 in overall and #10 in "electronics"
+
+1. `Scope`
+what is sales rank? Lets define it to be total sales over past week
+
+2. `Reasonable assumptions`
+stats do not need to be 100% up to date. data can be an hour old for popular items and up to one day old for less popular items
+
+precision is important is important for most popular items but small degree of error for less popular items is ok
+
+3. `Major Components`
+Store every order in DB. Every hour, pull data from DB by category, compute total sales, sort it, store it in some sales rank data cache. Frontend just pulls sales rank from this table.
+
+4. `Key Issues`
+
+#Analytics are expensive
+naively periodically querying the DB for number of sales in past week for each product will be expensive. == running query over all sales for all time
+
+we just need to track total sales. 
+
+#Prod ID | Total | Sun | Mon | Tue | Wed | Thur | Fri | Sat
+
+-> on each purcahse update `total` and corresponding day
+
+#Prod ID | Category ID
+
+and perform joins.
+
+#DB writes are very frequent. 
+We probably want to `batch up` DB writes. Store purchases in in-memory cache (as well as log file as backup). flush cache data.
+
+After updating DB, re-run sales rank data. Ensure that sales rank doesn't run until all stored data is processed or by dividing up cache by some time period.
+
+#Joins are expensive
+sort data on category first and then sales volume
+Also need to do one sort of entire table on just sales number to get overall rank
+
+
+
+
+
+
+

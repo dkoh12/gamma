@@ -1,0 +1,17 @@
+how would you design Google Analytics?
+
+large number of users and need real-time analysis report
+
+how would you detect trends?
+
+>> need to segregate user based on geographic location and will help server perform analysis correctly (distributed system concept)
+>> in each server, need to measure each user's activity and update it to the master server in certain scheduling occurences
+>> data mine to analyze data. 
+
+
+
+
+n = len of list
+q = where slow and fast ptr mmet
+p = len of loop
+q = n + p - (n%p) ??

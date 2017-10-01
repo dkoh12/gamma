@@ -1,0 +1,230 @@
+[
+    {
+        "barista_id": 1,
+        "order_id": 1,
+        "profit": 3,
+        "start_time": 7
+    },
+    {
+        "barista_id": 2,
+        "order_id": 2,
+        "profit": 8,
+        "start_time": 7
+    },
+    {
+        "barista_id": 1,
+        "order_id": 3,
+        "profit": 11,
+        "start_time": 11
+    },
+    {
+        "barista_id": 2,
+        "order_id": 4,
+        "profit": 16,
+        "start_time": 14
+    },
+    {
+        "barista_id": 1,
+        "order_id": 5,
+        "profit": 21,
+        "start_time": 15
+    },
+    {
+        "barista_id": 2,
+        "order_id": 6,
+        "profit": 23,
+        "start_time": 21
+    },
+    {
+        "barista_id": 1,
+        "order_id": 7,
+        "profit": 25,
+        "start_time": 22
+    },
+    {
+        "barista_id": 2,
+        "order_id": 8,
+        "profit": 30,
+        "start_time": 24
+    },
+    {
+        "barista_id": 1,
+        "order_id": 9,
+        "profit": 33,
+        "start_time": 25
+    },
+    {
+        "barista_id": 1,
+        "order_id": 10,
+        "profit": 36,
+        "start_time": 29
+    },
+    {
+        "barista_id": 2,
+        "order_id": 11,
+        "profit": 38,
+        "start_time": 31
+    },
+    {
+        "barista_id": 1,
+        "order_id": 12,
+        "profit": 40,
+        "start_time": 33
+    },
+    {
+        "barista_id": 2,
+        "order_id": 13,
+        "profit": 43,
+        "start_time": 34
+    },
+    {
+        "barista_id": 1,
+        "order_id": 14,
+        "profit": 48,
+        "start_time": 36
+    },
+    {
+        "barista_id": 2,
+        "order_id": 15,
+        "profit": 53,
+        "start_time": 38
+    },
+    {
+        "barista_id": 1,
+        "order_id": 16,
+        "profit": 56,
+        "start_time": 43
+    },
+    {
+        "barista_id": 2,
+        "order_id": 17,
+        "profit": 59,
+        "start_time": 45
+    },
+    {
+        "barista_id": 1,
+        "order_id": 18,
+        "profit": 64,
+        "start_time": 47
+    },
+    {
+        "barista_id": 2,
+        "order_id": 19,
+        "profit": 69,
+        "start_time": 49
+    },
+    {
+        "barista_id": 1,
+        "order_id": 20,
+        "profit": 74,
+        "start_time": 54
+    },
+    {
+        "barista_id": 2,
+        "order_id": 21,
+        "profit": 79,
+        "start_time": 56
+    },
+    {
+        "barista_id": 1,
+        "order_id": 22,
+        "profit": 82,
+        "start_time": 61
+    },
+    {
+        "barista_id": 2,
+        "order_id": 23,
+        "profit": 84,
+        "start_time": 63
+    },
+    {
+        "barista_id": 1,
+        "order_id": 24,
+        "profit": 86,
+        "start_time": 65
+    },
+    {
+        "barista_id": 2,
+        "order_id": 25,
+        "profit": 89,
+        "start_time": 66
+    },
+    {
+        "barista_id": 1,
+        "order_id": 26,
+        "profit": 92,
+        "start_time": 68
+    },
+    {
+        "barista_id": 2,
+        "order_id": 27,
+        "profit": 95,
+        "start_time": 70
+    },
+    {
+        "barista_id": 1,
+        "order_id": 28,
+        "profit": 97,
+        "start_time": 72
+    },
+    {
+        "barista_id": 2,
+        "order_id": 29,
+        "profit": 102,
+        "start_time": 74
+    },
+    {
+        "barista_id": 1,
+        "order_id": 30,
+        "profit": 104,
+        "start_time": 75
+    },
+    {
+        "barista_id": 1,
+        "order_id": 31,
+        "profit": 106,
+        "start_time": 78
+    },
+    {
+        "barista_id": 1,
+        "order_id": 32,
+        "profit": 109,
+        "start_time": 81
+    },
+    {
+        "barista_id": 2,
+        "order_id": 33,
+        "profit": 114,
+        "start_time": 81
+    },
+    {
+        "barista_id": 1,
+        "order_id": 34,
+        "profit": 119,
+        "start_time": 85
+    },
+    {
+        "barista_id": 2,
+        "order_id": 35,
+        "profit": 124,
+        "start_time": 88
+    },
+    {
+        "barista_id": 1,
+        "order_id": 36,
+        "profit": 127,
+        "start_time": 92
+    },
+    {
+        "barista_id": 2,
+        "order_id": 37,
+        "profit": 132,
+        "start_time": 95
+    },
+    {
+        "barista_id": 1,
+        "order_id": 38,
+        "profit": 137,
+        "start_time": 96
+    }
+]

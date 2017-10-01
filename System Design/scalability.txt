@@ -1,0 +1,149 @@
+**Scalability**
+
+http://highscalability.com/
+
+1. Client Ease of Use
+2. Ease for Ourselves
+3. Flexibility for Future Demands
+4. Scalability and Efficiency
+
+#System Design Guide
+https://github.com/donnemartin/system-design-primer
+
+
+#CAP THEOREM
+* Consistency - every read gets you most recent write
+* Availability  - every node (not failed) always executes queries  (aka Latency)
+* Partition Tolerance - Even if connection between nodes are down still guarantee Consistency & Availability. 
+
+CAN ONLY HAVE 2 OF 3
+
+idea is we have 2 nodes and network has some failure. 
+If we update 1 but not the other => NOT CONSISTENT
+If the un-updated node is locked and getting updated => NOT AVAILABLE
+If network is fully working, we can be available and consistent but guarantee that network cannot fail => NOT PARTITION TOLERANT.
+
+We have to be partition tolerant since failure of system is common. 
+
+But REALLY just 1 out of 2. `Availability vs Consistency`
+
+Availability - achieved by replicated data across different machines
+Consistency - achieved by updating several nodes before allowing reads
+Partition Tolerance - failure of part of system is rare. Cause delay in update between nodes.
+
+-> on systems that allow reads before updating nodes will have high availability
+
+-> on systems that lock all nodes before reads will have high consistency
+
+This is temporary and exists only for duration of the delay.
+
+
+web hosts: Bluehost, DreamHost, Go Daddy, Host Gator, pair Networks
+
+SDP - encrypted. passwords and usernames encrypted.
+FTP - also sends usernames and passwords in clear. 
+VPS - virtual private server (get your own copy of OS) <usually pay more>
+
+
+**Vertical Scaling**
+throw money and resources
+there is a limit to the state of the art in technology
+
+**Horizontal Scaling**
+buy bunch of cheaper machines instead. multiple servers. redundancy
+
+**Caching**
+sticky sessions (still same backend server)
+cookies (if you store in cookie, you’re not going to have privacy)
+make cookie store a number and your server store a number and compare it. Then you don’t have to worry about IP addresses changing, etc and prevent spooking
+
+
+**MySQL query cache**
+memcache. Memory cache. Stores whatever you want in RAM. 
+
+DB store could be more expensive than a cache
+
+
+**Load Balancing**
+get data from server to client and balance network traffic. request arrives to load balancer. The load balancer decides which server to send it to. 
+
+round robin - throw out ip addr
+
+sessions are implemented per server. So if you get a round robin to server1 instead of server 2, you might have to login again. Can’t really use round robin or true load balancing
+
+load balancing done through software or hardware ($100,000)
+
+
+#CDN
+An interconnected system of cache servers that use geographic locations to delivery web content
+
+#Proxy Server
+cache server is almost always also a proxy server. Proxy servers can also log its interactions which can be helpful for troubleshooting. Proxy servers also lie behind the firewall which protects the main enterprise servers. Proxy's cache will improve user response time
+
+to user proxy server is invisible.
+
+- obscure client IP
+- blocks malicious traffic
+- logs ativity
+- improve performance
+- block sites
+
+http://whatis.techtarget.com/definition/proxy-server
+
+
+
+**Database Replication**
+RAID 
+File Server
+master - slave.
+master - master. can write to either server 1 or 2. query gets replicated. 
+
+
+master-slave. 
+- reads handled by slaves. 
+- writes handled by master. 
+- data is written to master and replicated to slaves. 
+- master becomes the bottleneck. And as load increase, cost of replication increases.
+
+
+As size of DB grows linearly, response time tend to grow logarithmically.
+
+
+**Database Partitioning / Sharding**
+Split load of DB on different machines.
+
+horizontal partitioning split DB based on rows
+normalization / vertical partitioning split DB based on col
+
+each partition is called a shard and is stored on a separate server.
+
+#adv of horizontal partitioning
+* reduce rows in tables
+* reduce index size (improves search performance)
+* enables distribution of DB over large number of machines. (greatly improving performance)
+* When more than 1 shard has to be searched, you can do them in parallel. Parallel processing is much faster compared to single monolithic DB
+
+#disadv of horizontal partition
+* heavier reliance between servers
+* data / indexes are sharded only one way so some searches are optimal while others are slow or impossible
+* issues of consistency / durability
+
+#difference between horizontal partitioning and sharding
+horizontal partitioning splits tables by rows within *single* instance of schema. (instance = data. schema = template/framework)
+sharding splits same way but does this across *multiple* instances of schema. obvious advantage is search load for large partitioned table can now be split across multiple servers.
+
+-> Sharding replicates data. makes data replication easy. 
+-> "shared-nothing" partitioning. 
+
+
+sharding should ONLY be used when other options for optimizations are inadequate. It introduces complexity.
+
+
+
+
+
+
+
+
+
+

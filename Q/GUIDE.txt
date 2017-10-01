@@ -1,0 +1,55 @@
+
+#Guide
+http://kelukelu.me/interview/questions.html
+
+https://medium.freecodecamp.org/10-common-data-structures-explained-with-videos-exercises-aaff6c06fb2b
+
+#500 tech interview questions and answers
+https://techiedelight.quora.com/500-Data-structures-and-algorithms-interview-questions-and-their-solutions?share=1
+
+array
+linked list
+stack/queue
+Trees (tree, binary tree, BST, red-black tree)
+Heap (min heap / max heap)
+Hash Table (very important) (different collision mitigation scheme. amortized constant time)
+Trie
+Linked Hash Map
+Graphs
+
+
+adj lst 
+storage O(V + E)
+add vertex / edge O(1)
+remove vertex O(V+E)
+remove edge O(E)
+query O(V)
+
+
+
+Know O() for insert/delete/lookup
+
+sorting algorithms (comparison and non-comparison sorting)
+tree traversals (inorder, preorder, postorder, level order)
+traversals (A*, BFS, DFS, dijkstras)
+all prefix-tree searches
+
+bits & bytes. big and little endian.
+
+-> write a method to determine if bit wise representation of an integer is a palindrome
+
+-> know how sockets work. How the internet works. 
+
+-> DB
+
+-> Testing. what is Test Driven Development. Agile Methodology
+
+
+
+Jobs
+https://github.com/j-delaney/easy-application
+
+
+
+
+

@@ -1,0 +1,94 @@
+**How to Design Youtube**
+
+PART I
+http://blog.gainlo.co/index.php/2016/10/22/design-youtube-part/
+PART II
+http://blog.gainlo.co/index.php/2016/11/04/design-youtube-part-ii/
+
+* Storage. How do you design DB schema? 
+* Scalability. 
+* Web Server. Most common structure is front ends (both mobile and web) talk to web server which handles logic like user authentication, sessions, fetching and updating users' data, etc. Then server connects to multiple backends like video storage, recommendation server and so forth.
+* Cache. 
+* Recommendation System
+* Security System
+
+#DB
+Relational DB like MySQL is straightforward.
+
+Define `user` model which can be stored in single table including `email, name, registration data, profile info`.
+
+Another approach is to keep user data in 2 tables - one for authentication related info like email, password, name, registeration date - another for additional profile info like address, age, so forth
+
+`video` model contains meta data (title, description, size), video file, comments, view counts. 
+
+`author-video` relation will be another table to map `user id` to `video id`.
+Data normalization to reduce data redundancy and improve data integrity.
+
+#Storage
+Recommended to store large static files like videos and images (thumbnails) separately. Each video has a thumbnail of different sizes for different screens. 4x more images than videos. Cannot ignore image storage
+
+**CDN (Content Delivery Network)**
+CDN - globally distributed network of proxy servers deployed in multiple data centers. 
+
+goal of CDN is to serve content to end-users w/ high availability and high performance. Use CDN such as Amazon CloudFront to store images and videos
+
+Since CDNs optimize for delivery speed, the bandwidth costs a little more. If user base is spread *gloablly* and speed is important, CDN may be better.
+
+3rd party network and many companies are storing static files on CDN today.
+
+**Popular vs Long-tailed Videos**
+Most videos have few views. 
+
+Host popular videos on CDN and less popular ones on their own servers. 
+However most traffic is driven by long tail videos.
+
+* popular videos are viewed by huge audience in different locations which is what CDN is good at. It replicates content in multiple places so that its's more likely to serve the video from close and friendly network
+* long-tailed videos are usually consumed by particular group of people and if you can predict in advance, it's possible to store these contents efficiently
+
+
+#Scalability
+Scale only when you need. 
+Master / Slave Model
+
+Later. Partition DB and settle on sharding approach.
+Split DB by users' location when request comes and route to corresponding DB.
+
+Identify bottleneck: WATCHING VIDEOS
+
+Prioritize traffic by splitting data into 2 clusters: a video cluster and a general cluster. Give a lot of resources to video cluster and other social network features will be routed to less capable cluster
+
+#Cache
+Hard to cache YouTube since most of traffic comes from long tail videos..
+
+General Idea : if you are building a long tail product, don't place too much bet on the cache
+
+#Security
+View Hacking - view count shows how popular video is. (programmatically)
+
+Most straightforward approach is if a particular IP issues too many requests, just block it. Or restrict # of view count per IP. 
+
+People may use services like `Tor` to hide IP or `Mechanical Turk` to pay people to click the video with low costs.
+
+But it is easy to detect such hacking. A video with high viewcount but low engagement is very suspicious. 
+
+With large number of videos YouTube has, not hard to extract patterns of real view count. In order to hack, need to provide reasonable engagment metrics such as share count, comment count, view time, etc. Almost impossible to fake them all
+
+
+#Web Server
+build multiple replicas and have a load balancer on top of them.
+
+The server is mainly responsible for handling user requests and return response. It should have few heavy logics and everything else should be built into separate servers.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

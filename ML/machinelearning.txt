@@ -1,0 +1,102 @@
+
+* **trade-off between bias and variance**
+bias = under fitting (too general)
+variance = over fitting (too complex)
+
+
+* **supervised vs unsupervised**
+supervised requires training labeled data. (classification)
+unsupervised does not require training labeled data
+
+* **kNN different from k-means clustering**
+k-Nearest Neighbors is supervised classification algorithm.
+k-means clustering is unsupervised clustering algorithm.
+
+k-Nearest Neighbors, need labeled data to classify an unlabeled point into nearest neighbor.
+
+* **ROC curve**
+graphical representation of contrast between true positive rates and false positive rates.
+
+trade offs between true positives vs false positives
+
+* **precision vs recall**
+recall = true positive rate
+precision = # of accurate positives / # of positives it claims
+
+* **Bayes Theorem**
+gives you posterior probability of an event given prior knowledge.
+
+mathematically it's expressed as true positive of condition / sum of false positive of population and true positive of condition
+
+P(A|B) = P(B|A) P(A) / P(B)
+
+* **Naive Bayes**
+Naive Bayes is naive because the conditional probability is calculated as the pure product of individual probabilities of componenets. This implies absolute independence of features - a condition probably never met in real life.
+
+* **L1 and L2 regularization**
+L2 regularization tends to spread error among all terms
+L1 is more binary/sparse with many either being assigned 1 or 0.
+
+L1 corresponds to setting Laplacean prior
+L2 corresponds to setting Gaussian prior
+
+* **Type I and Type II error**
+Type I err = false positive (false alarm)
+Type II err = false negative (fail to alarm)
+
+* **generative vs discriminative model**
+generative model will learn categories of data
+discriminative model will simply learn the distinction between different categories of data.
+
+discriminative models will generally outperform generative models on classification tasks
+
+* **F1 score**
+F1 score = measure of model's performance. It is a weighted avg of precision and recall of a model which results tend to 1 being the best and 0 besting the worst. Use it in classification tests where true negatives don't matter much
+
+* **handle imbalanced dataset**
+1. collect more data
+2. resample dataset
+3. try different algorithm
+
+* **classification vs regression**
+classification produces discrete values and dataset to strict categories
+regression gives you continuous results that allow you to better distinguish differences between individual points
+
+* **ensemble techniques**
+combination of learning algorithms to optimize better predictive performance. Typically reduce overfitting and make model more robust.
+
+* **avoid overfitting**
+1. keep model simpler. reduce variance by taking fewer parameters
+2. cross-validation such as k-folds cross-validation
+3. regularization technique such as LASSO that penalize certain model parameters if they're likely to cause overfitting
+
+* **kernel trick**
+kernel trick involves kernel functions that can enable in higher dimension spaces without explicitly calculating the coordinates of points within that dimension. Instead kernel functions compute inner products betweeen images of all pairs of data in feature space. 
+
+Enables us to effectively run algorithms in high-dimensional space with lower-dimensional data
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

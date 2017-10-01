@@ -1,0 +1,69 @@
+
+https://gabrieletolomei.wordpress.com/miscellanea/operating-systems/virtual-memory-paging-and-swapping/
+
+https://www.tutorialspoint.com/operating_system/os_virtual_memory.htm
+
+
+Virtual Memory
+1. extend use of physical memory by using disk
+2. allows us to have memory protection, because each virtual address is translated to a physical address
+
+MMU translates virtual address to physical address
+
+
+virtual memory is commonly implemented by demand paging. Can also be implemented in segmentation system.
+
+
+
+Demand paging follows that pages should only be brought into memory if the executing process demands them. This is often referred to as lazy evaluation as only those pages demanded by the process are swapped from secondary storage to main memory. Contrast this to pure swapping, where all memory for a process is swapped from secondary storage to main memory during the process startup.
+
+
+
+Demand Paging (lazy loading technique)
+
+Demand paging is similar to paging system where processes reside in disk and pages are loaded only on demand, not in advance.
+
+ When context switch occurs, OS does not copy any of the old program's pages out to disk or any of the new program's pages into RAM. instead just begins executing the new program after loading the first page and fetches the program's pages as they are referenced.
+
+ while executing a program, if the program references a page which is not available in the main memory because it was swapped out a little ago, the processor treats this invalid memory reference as a page fault and transfes control from program to OS to demand the page back into memory
+
+
+ pro
+ - large VM
+ - efficient use of memory
+ - no limit on degree of multiprogramming
+
+ con
+ - number of tables and amount of processor overhead for handling page interrupts are greater than in the case of simple paged management techniques
+
+
+paging happens whenever a page fault occurs. 
+
+
+
+Reference String
+The string of memory references is called reference string. Reference strings are generated artificially or by tracing a given system and recording the address of each memory reference. The latter choice produces a large number of data, where we note two things.
+
+For a given page size, we need to consider only the page number, not the entire address.
+
+If we have a reference to a page p, then any immediately following references to page p will never cause a page fault. Page p will be in memory after the first reference; the immediately following references will not fault.
+
+For example, consider the following sequence of addresses − 123,215,600,1234,76,96
+
+If page size is 100, then the reference string is 1,2,6,12,0,0
+
+
+
+FIFO alg (delete from queue)
+
+MIN alg (replace page that will not be used for the longest period of time)
+problem is how do you know the future?
+
+LRU alg (page which has not been used for longest)
+
+LFU alg (least frequently used)
+suffers from situation in which page is used heavily during initial phase of process but then is never used again
+
+MFU alg (most frequently used)
+
+

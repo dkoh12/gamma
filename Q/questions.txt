@@ -1,0 +1,115 @@
+Questions to ask at every interview
+
+1. what do most successful leaders here value?
+2. when people here fail, what’s typically the cause?
+3. what’s an early mistake people in similar roles make - and how can I avoid it?
+
+
+what qualities help someone thrive at [company]?
+What does success look like in the role I am interviewing for?
+What are some of the challenges someone in this role will tackle?
+
+---------------------------------
+
+**antipatterns** (phone screen)
+- don't talk too much
+- don't be one trick pony. 
+
+**acid tests**
+1. coding (C++, C, Java)
+2. OO design
+3. scripting / regex
+4. data structures
+5. bits / bytes
+
+https://sites.google.com/site/steveyegge2/five-essential-phone-screen-questions
+
+
+**important concepts** 
+
+Hashtables, Trees, Graphs
+
+Hashtables
+- most important data structure.
+- should be able to implement them using only arrays.
+
+Trees
+- construction, traversal, manipulation
+- binary, n-ary, trie
+- balanced: red/black, splay, AVL
+- bfs, dfs
+- preorder, inorder, postorder
+
+Graphs 
+- objects & ptrs, matrix, adj list
+- bfs, dfs
+
+OS
+- processes, threads, concurrency issues
+- locks, mutexes, semaphores, and monitors
+- deadlock, livelock and how to avoid them
+- context switch and how its initiated by OS
+- scheduling
+
+language
+- C++, Java, Python, UNIX, Ruby, Javascript
+
+
+---
+
+Bad Sign #1a:
+
+Me:   So! What languages are you most familiar/proficient with? 
+Them: (worried) I've done mostly Java lately.
+Me:   (long, pregnant pause)
+Them: Yeah, um, Java. 
+Me:   Any others?
+Them: Um, I did C in school a long time ago, but... pretty much mostly Java now.
+
+
+Bad Sign #2:
+
+Me:   So! What data structures do we have available to us, as programmers? 
+Them: Arrays, queues, vectors, stacks, lists, um, linked lists...
+Me:   OK, any others?
+Them: Um, doubly-linked lists, and, uh, array lists.
+Me:   Have you ever used a tree? 
+Them: Oh! (laughs) Yeah, um, I forgot about those.
+
+
+
+Bad Sign #3:
+
+Me:   So! What the the primitive types in Java (or C++)?
+Them: Ummmm, there's, um, int. And, uh, double. 
+Me:   Any others?
+Them: Shoot, I'm drawing a blank right now. Um, String?
+
+
+Bad Sign #4:
+
+Me:   So! What text-editor do you use?
+Them: Visual Studio. 
+Me:   OK. What about on Unix?
+Them: On Unix I use vi. 
+Me:   Er, yeah, vi is cool... ever used VIM?
+Them: No, just vi. Always worked just fine for me.
+
+
+Bad Sign #5:
+
+Me:   So! What did you study in your Operating Systems class?
+Them: Oh, that was a long time ago. I can hardly remember. Hehe. 
+Me:   How long ago was it?
+Them: 2 years. 
+
+
+
+
+
+
+
+
+
+
+

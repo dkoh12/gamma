@@ -1,0 +1,46 @@
+http://blog.gainlo.co/index.php/2016/05/17/design-a-cache-system/
+
+#Design a Cache 
+
+LRU
+LRU cache should support: lookup, insert, delete
+
+to achieve fast lookup, use `hash`.
+to achieve fast insert/delete, use `linked list`
+to achieve least recently used item, need something in order like queue, stack, or sorted array
+
+
+Combining all this, we can use `queue implemented by doubly linked list` to store all resources. Also a `hash table` with resource identifier as key and address of the corressponding queue node as value is needed
+
+
+
+How it works:
+When resource A is requested, check hash table to see if A exists in cache. If so immediately locate corresponding queue node and return it. If not, add A into the cache. If there is enough space, add it to the end of the queue and update hash table. Otherwise, delete the least recently used entry. To do that easily remove the head of the queue and corresponding entry from the hash table.
+
+
+#Eviction Policy
+Random Replacement (RR) - randomly delete an entry
+Least frequently used (LFU) - keep count of how frequent each item is requested and delete the one least frequently used 
+
+^ 1 problem w/ LFU is that an item might be frequent only in the past but LFU will still keep this term for a while
+
+
+#Cache Concurrency
+classic read / write problem. 2 clients try to compete for same cache slot, the one who updates last wins.
+
+common solution is to use a `lock`. the downside is that it affects performance a lot.
+
+Optimize?
+
+1. `split cache into multiple shards` and have a `lock for each of them` so that clients won't wait for each other if they are updating cache from different shards. Given that hot entries are more likely to be visited, certain shards will be more often locked than others.
+
+2. Use `commit logs`. To update cache, store `mutations into logs` rather than update immediately. then some `background process will execute logs asynchronously`. this strategy is commonly adopted in database design
+
+
+
+#Distributed Cache system
+When system gets to certain scale, need to distribute cache to multiple machines
+
+keep hash table that maps each resource to corresponding machine. Therefore when requesting resource A, we know that machine M is reponsible for cache A. At machine M it has it's own local cache. Machine M may need to fetch and update the cache for A if it doesn't exist in memory. 
+
+

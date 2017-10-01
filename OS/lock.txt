@@ -1,0 +1,61 @@
+design locking mechanism for distributed system
+
+there is a lock manager and bunch of other nodes
+1. each node, if it wants to acquire a lock, sends a lock request to the lock manager and wait for async callback from the lock manager
+2. lock manager has lock request queue. checks if queue is empty, sends a lockAcquired notification to caller node then puts lock request on queue. If queue is not empty, just push lock request to queue
+3. when node receives lockAcquired notification, it can process data (meaning lock is acquired)
+4. when node finishes processing, unlock to the node manager
+5. when unlock call is received from node manager, it pops data from queue and if queue is not empty, sends a lockAcquired notification to the next node in queue.
+
+
+refer to lamport distributed mutual exclusion algorithm
+
+
+centralized mechanism
+1. master keeps token and slave nodes request for token when they enter critical section and wait for it
+2. if master has token, it replies back. otherwise queue the request
+3. when master receives token back from slave it sends token to first enqueued request.
+
+
+
+Deadlock Detection (prevent deadlocks by negating 1 of these 4 conditions)
+
+1. Mutual Exclusion 
+	resources involved are unshareable
+
+2. Hold and Wait
+	requesting process holds resources while waiting for requested resources
+
+3. No preemption
+	resources allocated to a process cannot be preempted.
+	aka resource cannot be taken away from a process while that resource is being used
+
+4. Circular Wait
+	process that forms circular list of waiting resources
+
+
+deadlock detection - resource allocation graph (can't exist a cycle or else deadlock)
+wait-for graph??
+
+Banker's Algorithm
+
+when a process requests a set of resources, will the system be at a safe state after the allocation?
+	yes > grant resources
+	no > block process
+
+
+OS can schedule processes to avoid deadlocks
+
+
+Deadlock recovery:
+1. kill a deadlocked process. It will break the chain
+2. preempt resource until the deadlock is broken
+
+
+
+
+
+
+
+
+

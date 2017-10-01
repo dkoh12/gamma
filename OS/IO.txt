@@ -1,0 +1,64 @@
+I/O
+
+HARDWARE
+
+block device - driver communicates by sending blocks of data
+character device - driver communicates by sending and receiving single characters.
+
+device drivers are SW modules that can be plugged in an OS to handle a particular device. OS takes help from device drivers to handle all I/O devices
+
+Device Controller works like an interface between device and device driver. 
+
+always a device driver and device controller for each device communication w/ OS. 
+main task of device controller is to convert serial bit stream to block of bytes, perform error correction as necessary.
+
+any device connected to the computer is connected by a plug and socket. Socket is connected to a device controller. CPU and device controllers all use a common bus for communication. 
+
+
+
+CPU must have a way to pass information to and from an I/O device
+1. Special Instruction I/O
+	- use specific CPU instructions for controller I/O devices
+
+2. Memory Mapped I/O
+	- same addr space shared by memory & I/O devices. The device is connected directly to certain main memory locations so that I/O device can transfer block of data to/from memory without going through CPU.
+	- While using memory mapped IO, OS allocates buffer in memory and informs I/O device to use that buffer to send data to the CPU. I/O device operates asynchronously with CPU, interrupts CPU when finished.
+	- The advantage to this method is that every instruction which can access memory can be used to manipulate an I/O device. Memory mapped IO is used for most high-speed I/O devices like disks, communication interfaces.
+
+3. Direct Memory Access (DMA)
+	- (DMA) means CPU grants I/O module authority to read from or write to memory without involvement.
+	- DMA module itself controls exchange of data between main memory and the I/O device. CPU is only involved at the beginning and end of the transfer and interrupted only after entire block has been transferred.
+
+
+Polling
+- process of periodically checking status of device to see if it is time for the next I/O operation.
+- inefficient and much of processors time is wasted on unnecessary polls
+
+Interrupts
+- signal to CPU from device that requires attention
+- device controller puts interrupt signal on bus when it needs CPU's attention.
+
+
+SOFTWARE
+
+User Level Libraries − This provides simple interface to the user program to perform input and output. For example, stdio is a library provided by C and C++ programming languages.
+
+Kernel Level Modules − This provides device driver to interact with the device controller and device independent I/O modules used by the device drivers.
+
+Hardware − This layer includes actual hardware and hardware controller which interact with the device drivers and makes hardware alive.
+
+A key concept in the design of I/O software is that it should be device independent where it should be possible to write programs that can access any I/O device without having to specify the device in advance.
+
+Device Drivers
+Device drivers are software modules that can be plugged into an OS to handle a particular device. 
+
+-  To accept request from the device independent software above to it.
+-  Interact with the device controller to take and give I/O and perform required error handling
+-  Making sure that the request is executed successfully
+
+
+Interrupt Handlers (ISR)
+piece of software or more specifically a callback function in an operating system or more specifically in a device driver, whose execution is triggered by the reception of an interrupt.
+
+
+

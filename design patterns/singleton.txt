@@ -1,0 +1,159 @@
+
+#Links
+http://www.geeksforgeeks.org/singleton-design-pattern-introduction/
+
+http://www.geeksforgeeks.org/singleton-design-pattern/?qa-rewrite=1493/what-is-the-best-way-to-implement-singleton-design-pattern-in
+
+http://www.geeksforgeeks.org/java-singleton-design-pattern-practices-examples/
+
+
+#Singleton
+
+Singleton pattern is a design pattern which restricts class to instantiate its multiple obejcts.
+
+Singleton classes are used for logging, driver objects, caching and thread pool, database connections.
+
+1. It should have only one instance
+2. Instance should be globally accessible
+
+generally lazy initialization is used when we create a singleton class
+
+Examples
+1. java.lang.Runtime
+2. java.awt.Desktop
+
+
+```
+# Eager Initialization
+
+// singleton class
+public class GFG {
+    // static instance of class globally accessible
+    public static GFG instance = new GFG();
+
+    // private constructor so class cannot be instantiated from outside
+    private GFG() {}
+
+}
+```
+JVM executes static initializer when class is loaded and hence guaranteed to be thread safe
+use this method only when your singleton class is light and used throughout the execution of your program
+
+pro:
+* simple to implement.
+* no need to implement getInstance()
+
+con:
+* may lead to resource wastage. Because instance of class is always created (not lazy initiation)
+* CPU time is wasted
+* exception handling is not possible
+
+
+```
+#Method 1
+
+class Singleton {
+    private static Singleton obj;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if (obj == null)
+            obj = new Singleton();
+        return obj;
+    }
+}
+
+```
+
+instance is private so that no one can access it directly. prevent resource wastage.
+
+we declare *getInstance()* static so that we can call it w/o instantiating the class. Singleton obj is not created until we need it and call getInstance() (lazy intantiation)
+
+main problem w/ above is it is not thread safe
+
+# Method 2
+```
+class Singleton {
+    private static Singleton obj;
+
+    private Singleton() {}
+
+    //only one thread can execute this at a time
+    public static synchronized Singleton getInstance() {
+        if (obj == null)
+            obj = new Singleton();
+        return obj;
+    }
+}
+
+```
+
+The main disadvantage is that using *synchronized* every time while creating a singleton object is expensive and may decrease the performance of your program
+
+#Method 4 (best - use "Double Checked Locking")
+```
+class Singleton {
+    private volatile static Singleton obj;
+
+    private Singleton() {}
+
+    public static Singleton getInstance() {
+        if (obj == null) {
+            // to make thread safe
+            synchronized (Singleton.class) {
+                // check again as multiple threads
+                // can reach above step
+                if (obj == null)
+                    obj = new Singleton();
+            }
+        }
+        return obj;
+    }
+}
+
+```
+
+We have declared the obj `volatile` which ensures that multiple threads offer the obj variable correctly when it is being initialized to Singleton instance. Method drastically reduces the overhead of calling the synchronized method every time. 
+
+
+
+
+**volatile**
+Java
+http://www.geeksforgeeks.org/volatile-keyword-in-java/
+
+volatile -> thread safe. 
+If 2 threads run on different processors, each thread may have its own local copy of *sharedVar*
+
+volatile in Java tells compiler that value of variable must never be cached as its value may change outside scope of program.
+
+
+C++
+http://www.geeksforgeeks.org/understanding-volatile-qualifier-c-set-1-introduction/
+
+In C++, "volatile" is needed in embedded systems / device drivers where you need to read or write a memory-mapped hardware device. Contents of a particular device register could change at any time, so you need "volatile" keyword to ensure that such accesses aren't optimized away by the compiler
+
+
+#mutex:
+only one thread can execute critical section at a time
+#visibility:
+changes made by one thread to shared data are visible to other threads
+
+Java's `synchronized` keyword guarantees both mutex & visibilitiy. 
+`volatile` has visibility features but not atomicity features of synchronized.
+
+Values of volatile will never be cached and all writes & reads will be done to and from main memory. 
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,69 @@
+
+
+#RAID (Redundant Array of Independent Disks)
+
+#Raid 0 (Striping)
+splits data evenly across 2 or more disks w/o parity info, redundancy or fault tolerance.
+
+Failure will result in total data loss.
+
+Goal: Speed. Used to increase performance
+
+Uses: Scientific computing, Gaming
+
+#Raid 1 (Mirroring)
+Contains a mirrored pair of data. No parity, striping, or spanning of disk space. 
+
+Useful when read is more important than write. 
+
+SSDs have a RAID 1 setup
+
+
+#Raid 4
+Same as Raid 5 but has a dedicated parity disk
+
+```
+A1  A2  A3  Ap
+B1  B2  B3  Bp
+C1  C2  C3  Cp
+D1  D2  D3  Dp
+```
+
+#Raid 5 (distributed parity)
+Consists of block level striping w/ distributed parity. Parity info is distributed among drives. Upon failure of single drive, subsequent reads can be calculated from distributed parity such that no data is lost.
+
+
+```
+A1  A2  A3  Ap
+B1  B2  Bp  B3
+C1  Cp  C2  C3
+Dp  D1  D2  D3
+```
+
+
+
+#Raid 6 (dual parity)
+Same as Raid 5 but has 2 parity blocks. And as a result can handle 2 or more disk failures
+
+
+```
+A1  A2  A3  Ap  Aq
+B1  B2  Bp  Bq  B3
+C1  Cp  Cq  C2  C3
+Dp  Dq  D1  D2  D3
+Eq  E1  E2  E3  Ep
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+

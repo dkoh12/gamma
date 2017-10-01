@@ -1,0 +1,67 @@
+[
+    {
+        "order_id": 1,
+        "order_time": 7,
+        "type": "latte"
+    },
+    {
+        "order_id": 2,
+        "order_time": 7,
+        "type": "affogato"
+    },
+    {
+        "order_id": 3,
+        "order_time": 8,
+        "type": "latte"
+    },
+    {
+        "order_id": 4,
+        "order_time": 8,
+        "type": "affogato"
+    },
+    {
+        "order_id": 5,
+        "order_time": 9,
+        "type": "affogato"
+    },
+    {
+        "order_id": 6,
+        "order_time": 10,
+        "type": "tea"
+    },
+    {
+        "order_id": 7,
+        "order_time": 10,
+        "type": "tea"
+    },
+    {
+        "order_id": 8,
+        "order_time": 11,
+        "type": "affogato"
+    },
+    {
+        "order_id": 9,
+        "order_time": 11,
+        "type": "latte"
+    },
+    {
+        "order_id": 10,
+        "order_time": 30,
+        "type": "latte"
+    },
+    {
+        "order_id": 11,
+        "order_time": 30,
+        "type": "tea"
+    },
+    {
+        "order_id": 12,
+        "order_time": 90,
+        "type": "tea"
+    },
+    {
+        "order_id": 13,
+        "order_time": 99,
+        "type": "latte"
+    }
+]

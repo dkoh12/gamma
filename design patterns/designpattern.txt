@@ -1,0 +1,139 @@
+
+
+https://sourcemaking.com/design_patterns
+
+http://www.java67.com/2012/09/top-10-java-design-pattern-interview-question-answer.html
+
+design pattern = description / template for how to solve a problem that can be used in many different situations.
+
+#Creational Design Patterns
+These are all about `class instantiation/Object creation`. 
+class-creation patterns => use inheritance 
+object-creation patterns => use delegation
+
+* Abstract Factory
+    - Creates instance of several families of classes
+* Builder
+    - Separates object construction from its representation
+* Factory Method
+    - Creates instance of several derived classes
+* Object Pool
+    - Avoid expensive acquisition and release of resources by recycling objects that are no longer in use
+* Prototype
+    - A fully initialized instance to be copied or cloned
+* Singleton
+    - A class of which only a single instance can exist
+* Dependency Injection
+    - A class accepts objects it requires from an injector instead of creating the objects directly
+
+#Structural Design Patterns
+These are all about `Class and Object composition`
+class-creation patterns => use inheritance to compose interfaces
+object-patterns define ways to compose objects to obtain new functionality
+
+* Adapter
+    - Match interfaces of different classes
+* Bridge
+    - Separate an object's interface from its implementation
+* Composite
+    - Tree structure of simple and composite objects
+* Decorator
+    - Add responsibilities to objects dynamically
+* Facade
+    - A single class that represents an entire subsystem
+* Flyweight
+    - A fine-grained instance used for efficient sharing
+* Private Class Data
+    - Restricts accessor/mutator access
+* Proxy
+    - Object representing another object
+
+
+#Behavioral Design Patterns
+These are all about `Class's objects communication`. 
+
+* Chain of responsibility
+    - Way of passing a request between a chain of objects
+* Command
+    - Encapsulate a command request as an object
+* Interpreter
+    - Way to include language elements in a program
+* Iterator
+    - Sequentially access the elements of a collection
+* Mediator
+    - Defines simplified communication between classes
+* Memento
+    - Capture and restore an object's internal state
+* Null Object
+    - Designed to act as a default value of an object
+* Observer
+    - A way of notifying change to a number of classes
+* State
+    - Alter an object's behavior when its state changes
+* Strategy
+    - Encapsulates an algorithm inside a class
+* Template method
+    - Defer the exact steps of an algorithm to a subclass
+* Visitor
+    - Defines a new operation to a class without change
+
+
+#Concurrency Patterns
+* Active Object
+    - Decouples method execution from method invocation that reside in their own thread of control. Goal is to introduce concurrency, by using asynchronous method invocation and a scheduler for handling requests
+* Balking
+    - Only execute an action on an object when the object is in a particular state
+* Binding properties
+    - Combining multiple observers to force properties in different objects to be synchronized or coordinated in some way
+* Blockchain
+    - Decentralized way to store data and agree on ways of processing it in a Merkle tree, optionally using digital signature for any individual contirbutions
+* Double-checked locking
+    - Reduce overhead of acquiring a lock by first testing the locking criterian in an unsafe manner. Only if it succeeds does the actual locking logic proceed
+* Event-based asynchronous
+    - Addresses problems with asynchronous pattern that occur in multithreaded programs
+* Guarded suspension
+    - Manages operations that require both a lock to be acquired and a precondition to be satisfied before the operation can be executed
+* Join
+    - Provides a way to write concurrent, parallel and distributed programs by message passing. Compared to use of threads / lcoks, this is a high-level programming model
+* Lock
+    - One thread puts a "lock" on a resource, preventing other threads from accessing or modifying it
+* Messaging Design Pattern (MDP)
+    - allows interchange of information (ie. messages) between components and applications
+* Monitor Object
+    - Object whose methods are subject to mutual exclusion thus preventing multiple objects from erronously accessing it at the same time
+* Reactor
+    - A reactor object provides an asynchronous interface to resources that must be handled synchronously
+* Read-write lock
+    - allows concurrent read access to an object but requires exclusive access for write operations
+* Scheduler
+    - explicitly controls when threads may execute single-threaded code
+* Thread pool
+    - A number of threads are created to perform a number of tasks, which are usually organized in a queue. There are many more tasks than threads
+* Thread-specific storage
+    - static or "global" memory local to a thread
+
+
+Design Patterns may just be a sign of missing features of a given programming language (Java / C++)
+
+It's important because most places still use Java and C++.
+
+#Targets the wrong problem
+The need for patterns resutls from computer languages / techniques w/ insufficient abstraction ability. Under ideal factoring, a concept should not be copied, but merely referenced.
+
+**Most of these design patterns are eliminated in Dynamic languages**
+
+#Leads to inefficient solutions
+
+
+
+
+
+
+
+
+
+
+
+
+
+

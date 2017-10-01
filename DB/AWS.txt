@@ -1,0 +1,89 @@
+
+#AWS
+
+paid virtual cluster of computers
+web servers, databases, CRM
+HW/OS/SW/networking -> availability, redundancy, security
+
+
+https://en.wikipedia.org/wiki/Amazon_Web_Services
+
+
+#Compute
+* `Amazon Elastic Compute Cloud (EC2)` - IaaS service  (Microsoft Azure, Google Compute Engine, OpenStack, Rackspace)
+* `Amazon Elastic Beanstalk` - PaaS for hosting applications (Google App Engine, Heroku)
+* `Amazon Lambda (AWS Lambda)`
+
+
+#Networking
+
+
+#CDN
+* Amazon CloudFront (CDN)
+
+#Storage and Delivery
+* `Amazon Simple Storage Service (S3)` - provides scalable object storage. Uses: baackup/archiving, file storage & hosting, static website hosting, application data hosting
+* `Amazon Glacier` (provides long-term storage options compared to S3) - intended for archiving data
+* `Amazon Elastic Block Store (EBS)` - provide persistent block-level storage volumes for EC2
+* `Amazon Elastic File System (EFS)` - file storage service for EC2 instances
+
+#DB
+* `Amazon DynamoDB` - scalable, low-latency NoSQL backed by SSDs
+* `Amazon ElastiCache` - in-memory caching for webapps (Memcache, redis)
+* `Amazon Relational Database Service (RDS)` - provides scalable DB servers w/ MySQL, Oracle, SQL, PostgreSQL
+* `Amazon Redshift` - petabyte-scale data warehousing w/ column-based storage and multi-node compute
+* `Amazon SimpleDB` - Developers to run queries on structured data. Operates w/ S3 and EC2
+
+
+#Deployment
+* `AWS Elastic Beanstalk` - provides deployment and management of applications in the cloud
+* `AWS CloudFormation` - provides declarative template-based Infrastructure as Code model for configuring AWS
+
+
+#Management
+* `Amazon Identity and Access Management (IAM)` - used for providing authentication to various services
+* `Amazon CloudWatch` - monitors AWS cloud resources
+* `AWS Management Console (AWS Console)` - web interface to monitor your AWS services
+* `Amazon EC2 Container Service (ECS)` - highly scalable and fast container management service using Docker containers
+* `AWS Key Management Service (KMS)` - service to control and create encryption keys
+
+
+
+
+
+#SOA (Service Orient Architecture)
+services are provided to other components by application components through communication protocol over network.
+
+1. Logically represents a business activity w/ a specified outcome
+2. self-contained
+3. black box for consumers
+4. may consist of other underlying services
+
+
+Webservices
+------------
+#REST (Representational State Transfer)
+uses XML, JSON, plain text, html, 
+more flexible to parse other formats. services are cacheable
+
+GET
+PUT - replace or update an entry
+PATCH
+POST - create a new entry
+DELETE
+
+
+#SOAP (Simple Object Access Protocol)
+messaging protocol. uses XML. uses more bandwidth
+provides more security than REST. more used in enterprise applications
+services are non-cacheable
+
+Envelope
+Header
+Body
+Fault
+
+
+
+
+

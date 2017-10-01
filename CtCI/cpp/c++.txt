@@ -1,0 +1,12 @@
+What is a virtual function?
+
+virtual functions are functions in base class that you can override in derived class. Support Run time polymorphism.
+
+pure virtual function is one which must be overriden by any concrete (non-abstract) derived class. It is indicated with syntax " = 0" in the member's declaration.
+
+interface = all functions must be virtual functions
+
+abstract class = must have at least one virtual function but not necessarily all.
+
+https://stackoverflow.com/questions/2391679/why-do-we-need-virtual-functions-in-c
+

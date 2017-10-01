@@ -1,0 +1,131 @@
+
+DevOps (Software engineering, QA, technology operations)
+
+1. Impeccable SysAdmin. automate things
+2. Virtualization experience (VMware, KVM, Xen, Hyper-V)
+3. Understand Storage and Networking. (Design something w/ high uptime)
+4. Script (bash, perl, ruby, JS, python). REST api
+5. Need to code in C/C++. 
+6. Git, Fabric, Chef, Puppet, CFEngine
+6. people skills
+7. customer service
+8. Cloud experience. (AWS, Google App Enginer, Azure)
+9. Someone who cares
+
+
+#OS, DB, Cloud, Network, Security
+
+- shortage of people who understand difference between
+IaaS vs PaaS, stateful vs stateless, loosely coupled apps
+
+
+Cloud terms
+
+source management practices. Git
+Chef / Puppet. - popular configuration management systems
+
+- should be able to branch code, write code, test code, commit code, deploy code across 2 dozen servers
+
+sharp reading internals of system, check load balance
+Need to know DB inside and out
+
+migrate 100s of thousands of DB items in 10 tables across 5 machines. Backups? Restore backups? 
+
+agile, lean, kanban
+
+-----------------
+
+load balancing, network routing, ports on server
+service that is serving port
+
+what's a PTR in DNS?
+what's a MX record in DNS?
+How does a CDN choose closest host to serve a client?
+In which cases would you choose to not implement a CDN?
+How do you measure performance of a server/web application?
+What are secure ways to ssh to a server inside a private network from a public location?
+
+Describe 2-factor authentication
+
+authentication vs authorization
+PKI / SSL/Certificates
+
+how to keep logs on servers or containers w/ ephemeral storage?
+
+- subnets
+- internet gateways
+
+what's the use case for DB read replica
+
+idempotent = when there are no side effects of multiple identical requests made
+
+
+types of HTTP request
+GET - retrieve info
+PUT - puts file/resource at a specific URI. if exists, update (PUT generally not cacheable)
+POST - uploads content. initiate action on server (not idempotent. But cacheable)
+DELETE - remove data
+PATCH
+TRACE - perform message loop-back test 
+CONNECT - establish a tunnel to server
+HEAD - retrieve info w/o body
+OPTIONS - communication options
+
+
+DB
+---
+how to scale a DB w/o just increasing capacity of single machine while maintaining ACID?
+
+-> scale horizontally
+
+how to manage API versions? (github)
+https://stackoverflow.com/questions/389169/best-practices-for-api-versioning
+
+
+
+
+Now adays most websites are dynamic. Website need to be updates on a regular basis.
+ie) social media
+
+1. Webpage Optimization
+    - a webpage contains resources like text, images, videos.
+    - try to keep these sizes small: compression or optimizing scripting of webpage and JS
+    - optimizing scripting of webpage essentially minimizes HTTP requests
+2. Cached Pages (enable browser caching)
+    - Cached version of page is quicker.
+3. Quality Web Hosting
+    - use CDN service for website 
+
+compress text files / images the right way.
+save photos as JPEG. save navigation elements as PNG
+
+
+
+
+How to reduce load time of dynamic website?
+how to reduce load time of static website?
+
+cache
+apache fine tuning
+Compress images / text files
+Sytlesheets / JS
+
+
+Automation
+----------
+Puppet, Chef, Salt, Ansible
+
+
+
+
+
+
+
+
+s
+
+
+
+
+
+

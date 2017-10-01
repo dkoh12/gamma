@@ -1,0 +1,362 @@
+
+Concepts to Know
+https://www.javacodegeeks.com/2017/05/oops-concepts-need-know.html
+
+http://beginnersbook.com/2013/04/oops-concepts/
+
+
+
+**Terminology**
+*class, object (and the difference between the two)
+ instantiation
+ method (as opposed to, say, a C function)
+ virtual method, pure virtual method
+ class/static method
+ static/class initializer
+ constructor
+ destructor/finalizer
+ superclass or base class
+ subclass or derived class
+ inheritance
+ encapsulation
+ multiple inheritance (and give an example)
+ delegation/forwarding << 
+ composition/aggregation <<
+ abstract class
+ interface/protocol (and different from abstract class) <<
+ method overriding
+ method overloading (and difference from overriding)
+ polymorphism (without resorting to examples)
+ is-a versus has-a relationships (with examples) <<
+ method signatures (what's included in one)
+ method visibility (e.g.* public/private/other)
+
+
+* **what is OOP**
+paradigm where complete software operates as bunch of objects talking to each other. Object is a collection of data and methods that operate on its data
+
+* **what is a class?**
+class is a representation of a type of object
+
+* **what is an object?**
+object is an instance of a class.
+
+* **advantages of OOP**
+1. overall understanding of software is increased between developers & users
+2. eases maintenance by use of encapsulation
+
+* **main features of OOP**
+1. Encapsulation
+2. Polymorphism
+3. Inheritance
+4. Abstraction
+
+* **Encapsulation?**
+Hide specific details (internal data) inside a class
+
+Refers to 1 of 2 notions
+1. Data hiding: `public/private/protected` members (friend)
+2. bundling of data and methods together. (attribute of an object)
+
+* **Polymorphism?**
+Some code / operations / objects behave differently in different contexts
+
+Polymorphism means you can use a variable of a superclass type to hold a reference to an object whose class is the superclass or any of its subclasses.
+
+*Compile Time Polymorphism*
+compiler knows which function should be called when polymorphic call is made. C++ supports compile time polymorphism by supporting features like templates, function overloading, and default arguments
+
+*Run Time Polymorphism*
+Run Time Polymorphism is supported by virtual functions. Virtual functions are called according to type of object pointed or referred, not according to type of pointer or reference. In other words virtual functions are resolved late, at runtime. (ie. in Cat() not Animal())
+
+`virtual functions`
+
+
+* **Inheritance** (class inheritance)
+class is based on another class and uses data / implementation of other class.
+`subclasses`. Share code. Code reuse.
+
+
+All inheritance relationships are `is-a` relationships. Cat is a animal.
+
+defined at compile time
+
+
+* **Inheritance vs Composition**
+* http://www.bogotobogo.com/DesignPatterns/introduction.php
+
+Class `inheritance` lets us define the implementation of one class in terms of another's. 
+
+```
+class Animal{};
+class Cat : public Animal{};
+```
+
+Object `composition` is an alternative to class inheritance. Here, new functionality is obtained by composing object. In this case, no internal details of objects are visible *(black-box)* contrary to the class inheritance where the internals of parent classes are often visible *(white-box)* to subclasses.
+
+```
+class Animal{};
+class Cat {
+private:
+    Animal *animal;
+};
+```
+
+
+* **Disadvantages of Inheritance**
+1. You `can't change implementation inherited from super class` at runtime. (inheritance is defined at compile time)
+2. Inheritance `exposes subclass to details of its parent's class implementation`. That's why we say often inheritance breaks encapsulation
+3. Tight coupling provided by inheritance makes implementation of subclass very `bound up` with implementation of super class that any change in parent implementation will force subclass to change
+4. excessive reusing by subclass can make `inheritance stack very deep` and confusing.
+
+[link](https://stackoverflow.com/questions/49002/prefer-composition-over-inheritance)
+
+* **advantages of composition over inheritance**
+Object composition is defined at runtime through `objects acquiring references to other objects`. In such a case these `objects will never be able to reach each-other's protected data` (no encapsulation break) and will be forced to respect each other's interface. And in this case also, implementation dependencies will be a lot less than in case of inheritance.
+
+http://www.bogotobogo.com/DesignPatterns/introduction.php
+
+By using composition, subclass becomes `front-end` class and superclass becomes `back-end` class. With inheritance subclass automatically inherits all non-private methods of superclass it doesn't override. With composition, however, `front-end` class must explicitly invoke corresponding method in `back-end` class. This explicity call is called `forwarding or delegating` the method invocation to back-end object. 
+
+Composition approach to code reuse provides stronger encapsulation than inheritance because a change in the back-end class needn't break any code that relies only on the front-end class. 
+
+
+inheritance exposes subclass to details of parent class's implementation. often said inheritance breaks encapsulation.
+
+
+
+* **Abstraction**
+Hiding implementation complexity of how features offered by API/design/system were implemented. 
+
+ie) API. We don't know how it was implemented but we just call the API to do the task.
+
+
+* **what are manipulators?**
+functions which can be used in conjuction with << and >> operators on an object such as setw() and endl;
+
+* **what is inline function**
+technique used by compilers to insert complete body of function wherever that function is used in the program source code.
+
+* **what is friend function**
+friend of a class that is allowed to access public, private, or protected data in the same class.
+friend can be declared anywhere in class declaration and cannot be affected by access control.
+
+* **what is operator overloading**
+```
+complex operator*(complex a, complex b);
+complex& operator=(complex a, complex b);
+```
+
+function where different operators are applied and depends on arguments. Operator, -, * can be used to pass through function and has their own precedence to execute
+
+* **what is an abstract class**
+class cannot be instantiated. it can be inherited. only has abstract functions.
+
+* **difference between method overriding and overloading**
+method overriding is same method name, arguments, and return type. But we return the subclass's method instead of the Base class's method.
+
+overloading is when we have same method name but different arguments.
+
+
+ternary operator?
+finalize method?
+
+
+* **Forwarding** (reuse is dynamic) (behavior)
+forwarding object is frequently called `wrapper object`. and explicit forwarding members are called `wrapper functions`.
+
+sending / receiving => wrapper / wrappee
+
+(self / this) refers to `receiving object`. bound to wrappee.
+
+analogous to composition, execution depends only on receiving (member) object.
+
+receiver acts in its own context
+
+metaphor:
+`forward` email to friend. friend *donates their own money* and receives their own tax receipt. 
+
+* **Delegation** (reuse is dynamic) (behavior)
+(special case of forwarding?)
+class `A` delegates call to *(delegate)* `B`'s methodB
+
+receiving object delegates operations to delegate. Analagous to subclass deferring requests to parent class. 
+
+receiver acts on behalf of sender
+
+metaphor:
+`delegate` responding to your accountant. your accountant *donates your money* to charity and you receive tax receipt. 
+
+sender object/receiver object => receiver object/delegate
+
+(self / this) refers to sending object.
+
+is a form of `inheritance` with binding of the parent at run time rather than compile time. allows behavioral reuse w/o changing evaluation context.
+
+```
+public class A {
+  private B b = new B();
+
+  public void methodA() {
+    b.methodB();
+  }
+}
+```
+
+design pattern that allows same code reuse in composition as inheritance
+
+
+
+
+* **Composition vs Aggregation**
+Composition and Aggregation are both forms of Association.
+
+A university owns various departments, and each department has a number of professors. If the university closes, the departments will no longer exist, but the professors in those departments will continue to exist. Therefore, a University can be seen as a `composition` of departments, whereas departments have an `aggregation` of professors. In addition, a Professor could work in more than one department, but a department could not be part of more than one university.
+
+* **Composition** (filled diamond arrow) [Object Composition]
+`is part` 
+House has rooms. When house is destroyed, rooms are also destroyed.
+
+Lifetime of object is completely controlled by lifetime of another object. The controlled object is referenced as class attribute in the controller.
+
+Strong *has a* relationship. Ownership.
+
+The composite object takes ownership of the component. This means the composite is responsible for the creation and destruction of the component parts. An object may only be part of one composite. If the composite object is destroyed, all the component parts must be destroyed.
+
+You do composition by having another class `C` as a field of your class instead of extending `C`.
+    composition enforces encapsulation.
+
+
+```
+class Car {
+private:
+    GasTank myCarsGasTank;
+}
+```
+
+Inheritance : Car extends Automobile
+Composition : Car is composed of enginer
+
+```
+class Car : public Automobile {
+private:
+    Engine engine;
+};
+```
+
+Composition = more restrictive aggregation. When object contain other object, if the contained object cannot exist without exitence of container object.
+
+rationale: allows classes to define behaviors and attributes in modular fashion
+
+* **Aggregation** (unfilled diamond arrow)
+weak `has a` relationship.
+Relationship where neither class owns the other. No ownership: may outlive.
+
+`is made up of`
+house is made of bricks. Even if house goes away, bricks will stay. 
+
+In aggregation, the object may only contain a `reference or pointer` to the object. The object may not have lifetime responsibility for the reference or pointer
+
+rationale: Allows instances to reuse objects.
+
+```
+class Department {
+private:
+    Professor* members[5];
+}
+```
+
+* **Interface** *(applies to classes)*
+Interface also known as `protocol` for 2 unrelated classes to communicate with each other. Every class that implements interface must provide concrete (non-abstract) method for each method of interface.
+
+If you want to simulate ejection, only players or coaches can be ejected. So you cannot make it a method of parent class *People*. So create an interface *Ejectable* with method `Ejection()` and make *Player* and *Coach* implement it.
+
+```
+interface Ejectable
+{
+    Ejection()
+}
+ 
+class Player : implement Ejectable
+{
+    Ejection()
+    {
+        // storm out of the field screaming
+    }
+}
+ 
+class Coach : implement Ejectable
+{
+    Ejection()
+    {
+        // take your cellphone to talk with your assistant
+    }
+}
+```
+
+think of it as `behave-as`. Player behaves as Ejectable.
+
+In C++ interface = abstract base classes implemented with only pure virtual functions.
+
+https://github.com/reach2arunprakash/Data-Structures/blob/master/interview_questions_collection.md
+
+CompareTo interface.
+
+* **Abstract Class vs Interface**
+Interface is like an empty shell. All methods should not be defined. All methods must be public.
+
+Abstract classes can have defined methods. Members and methods can have any visibility.
+
+child class can implement multiple interfaces but only extend a single class (abstract or concrete). 
+
+child class can define abstract methods with same or less restrictive visibility but child class implementing interface must define methods with same visibility (public)
+
+
+* following cannot be marked "abstract" methods
+
+- constructors
+- static methods
+- private methods
+- methods marked with 'final'
+
+
+* **public final vs public final static**
+```
+Test x = new Test();
+Test y = new Test();
+x.var = 10;
+y.var = 20;
+System.out.println(x.var) == 10;
+
+Test x = new Test();
+Test y = new Test();
+x.staticvar = 10;
+y.staticvar = 20;
+System.out.println(x.staticvar) == 20;
+```
+
+static means it's declared once per class not per instance of class.
+So if you have a `final` variable declared in class, and you would create multiple copies of `final var` that doesn't change. It would make more sense to use `final static` in this case since you only have 1 copy.
+
+You would use `public final` in the case that classes are not involved.
+
+
+
+difference between char*, object, enum
+
+1. What classes they would define.
+2. What methods go in each class (including signatures).
+3. What the class constructors are responsible for.
+4. What data structures the class will have to maintain.
+5. Whether any Design Patterns are applicable to this problem.
+
+
+
+
+
+
+
+
+
+
+

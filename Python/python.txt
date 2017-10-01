@@ -1,0 +1,15 @@
+
+
+**str vs unicode**
+
+`str` is a string of bytes
+`unicode` is meant to handle *text*. Text is a sequence of code points which may be bigger than 1 Byte. text can be encoded as raw bytes (`utf-8`, `latin-1`, etc)
+
+unicode is not `encoded!!!`
+
+in Python3, `str` is called `bytes`
+
+
+**byte() vs bytearray()**
+
+byte is immutable wheras bytearray is mutable

@@ -1,0 +1,78 @@
+
+
+#How Sockets Work
+
+Sockets: abstraction of network I/O queue.
+interprocess communication
+
+https://docs.google.com/presentation/d/1s623fE64Ekm7hcE6OlfzJ3JEtcJ8cUhylwH5q2li-lY/edit#slide=id.g16da747a4d_1_258
+
+socket - an OS mechanism that connects processes to the networking stack
+port - number that identifies particular socket
+
+Sockets are the Internet's user API
+used for communication across hosts.
+
+Each host has an address. Addresses are how clients find servers.
+What if a host has multiple processes? Which one does it connect to?
+
+OS uses port numbers to direct traffic to right process. Port numbers are usually assigned randomly by OS.
+
+PORT numbers
+server ports are well known
+80 - HTTP
+22 - SSH
+
+server `listens` on port
+client `connects` to a port
+
+client also has a port to direct responses to the right client process
+
+
+
+
+#Client / Server Interaction
+
+http://www.linuxhowtos.org/C_C++/socket.htm
+http://www.geeksforgeeks.org/socket-programming-cc/
+
+Server process waits for requests from a client.
+Server first establishes (binds) an address that clients can use to find the server. When address is established, server waits for clients to request a service. client-server data exchange takes place when client connects to server through a socket. 
+
+
+#Server (Queue)
+------
+socket() - creates socket
+bind() - declares the socket's IP addr and port 
+listen() - listens for new connections
+accept() - create a new connection to the client & return socket associated with that connection
+send & receive functions
+close()
+
+#Client
+-------
+socket()
+bind() (optional)
+connect() - connect to server's address on some port
+send & receive functions
+close()
+
+
+
+bind - binds socket to address and port #
+listen - queue. waits for client to approach server to make a connection
+accept - takes first connection request from queue and creates a new connected socket. 
+
+connect - connects socket referred to be file descriptor to server's address and port as specified in addr
+
+
+
+
+
+
+
+
+
+
+
+

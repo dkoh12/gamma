@@ -1,0 +1,101 @@
+
+#News Feed
+(part 1)
+http://blog.gainlo.co/index.php/2016/03/29/design-news-feed-system-part-1-system-design-interview-questions/?utm_campaign=quora&utm_medium=What+are+the+best+practices+for+building+something+like+a+News+Feed%3F&utm_source=quora
+(part 2)
+http://blog.gainlo.co/index.php/2016/04/05/design-news-feed-system-part-2/?utm_campaign=quora&utm_medium=What+are+the+best+practices+for+building+something+like+a+News+Feed%3F&utm_source=quora
+
+
+Model: User + Feed object
+Feed ranking: more than just chronological
+Feed publishing: trivial when hundreds of users. costly when millions of usres
+
+#Model
+User object: userID, name, registration date, so forth
+Feed object: feedID, feedType, content, metadata (images/videos)
+
+If RDMS
+model 2 relations: `user-feed relation` and `friend relation`.
+Create *user-feed* table that stores userID and corresponding feedID
+
+user -> feed is 1 to many relationships
+so feed has foreign key of user
+
+For *friend* relation, `adj lst` is a common approach. See all users as nodes in a giant graph. Edges that connect nodes denote friend relation. 
+We can use a friend table that contains 2 userIDs in each entry to model the edge (friend relation). By doing this, most operations are quite convenient like fetch all friends of a user, check if 2 people are friends.
+
+
+System will first get all userIDs of friends from *friend table*. Then it fetches all feedIDs for each friend from *user-feed table*. Finally feed content is fetched based on feedID from *feed table*. We need to perform 3 joins.
+
+Optimization:
+Store feed content together w/ feedID in *user-feed table* so that we don't need to join the *feed table* any more. (denormalize) which means adding redundant data. We can optimize reads.
+
+disadv:
+- redundant data
+- data consistency: when we update a feed, need to update *feed table* and *user-feed table*
+
+->  matter of optimizing for reads or writes
+
+#Ranking
+there are several core metrics we care about: user stickiness, retention, ads revenue (click rate)
+
+a better ranking system can improve these metrics.
+
+Calculate feed score based on various features and rank feeds by its score. (Machine Learning involved)
+
+features: likes, comments, share, image/video, time, etc
+
+https://en.wikipedia.org/wiki/EdgeRank
+
+affinity score (u) - score how close you are w/ this user
+edge weight (e) - comments are worth more than likes
+time decay (d) - over time users find it less interesting
+
+#Feed Publishing
+When user loads all the feeds from his friends, it can be extremely costly. USer can have 1000 of friends. To load all feeds, it requires at least 2 joins (friends list and feed list)
+
+optimize and scale feed publishing system? (**push** and **pull**)
+
+For a push system, once the user has published a feed, we immediately push this feed to all his friends. The adv is when fetching feed, you don't need to go through your friends list and get feeds for each of them. It significantly reduces read operations. Downside is it increases write operation especially for people with large number of friends
+
+For pull system, feeds are only fetched when users are loading their home pages. So feed data doesn't need to be sent right after it's created. This approach optimizes for write operation but can be quite slow to fetch data even after denormalizing.
+
+#Selective Fanout
+The process of pushing an activity to all your friends/followers is called a fanout. So push approach is also called `fanout on write`. While pull approach is `fanout on load`.
+
+You can do a combination of both.
+If you are mainly using push model, you can disable fanout for high profile users and other people can only load their updates during read. The idea is that push operation can be extremely costly for high profile users since they have a lot of friends to notify. By disabling fanout for them, we can save a huge number of resources. 
+
+^ (Twitter adopted this approach)
+
+By same token, once a user publish a feed, we can also limit the fanout to only his active friends. For non-active users, most of the time the push operation is a waste since they will never come back consuming feeds. 
+
+#Summary
+80-20 rule. 
+80% of cost comes from 20% of features/users. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,361 @@
+
+
+auto?
+lambdas in c++?
+
+auto add = [](auto a, auto b){return a + b;} // C++14
+
+**MARKDOWN**
+<!-- https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet -->
+
+**ENVIRONMENT DIAGRAM C++ (and other languages)**
+http://pythontutor.com/cpp.html#mode=edit
+
+<!-- https://www.interviewcake.com/cpp-interview-questions -->
+* **difference between class and struct?**
+
+can do the same thing with class with a struct.
+BUT few things are easier with class! 
+* inheritance - classes can build on other classes to extend functionality w/o duplicating code
+* access control - struct members can be accessed or overwritten anywhere; access to class members can be restricted at compile time
+
+public - anywere, private - only be accessed w/in class def, protected - w/in class def and in class def for any inheriting class
+
+
+* **difference between shallow and depp copy of class?**
+
+shallow copy = instead of making fresh copy of actual data the ptr points to, it just copies the the ptr value. So both original and copy will have ptrs that reference same underlying data. Does memory dumping bit-by-bit
+
+deep copy = actually clones underlying data. Not shared between original and copy. Deep copy is achieved using copy constructor and/or overloading assignment operator
+
+
+* **difference between array and vector?**
+
+size is fixed at compile time for array. allocated single chunk of memory on stack.
+
+vector is a small class containing ptrs to heap. slightly slower but they can be resized. similar to Arraylist.
+
+* **what is a template function?**
+
+C++ makes us specify types for arguments and return values (string, int, char, etc). Templates let us write functions that take in any type. Keeps our code DRY.
+
+* **what is diamond problem? how can we get around it?**
+multiple inheritance is dangerous if not implemented correctly.
+
+diamond problem refers to an issue two classes B and C inherit from base class A and D inherits from both B and C. This forms a diamond shape.
+
+If there is a method in A that is overriden in B and C but not D, D doesn't know which version of method to inherit: B or C's?
+
+C++ by default follows each inheritance path separately. So D would contain 2 separate A objects (pentagon shape)
+
+>> so you want a diamond shape not a pentagon shape
+
+If inheritance from A to B and A to C are both marked `virtual`, C++ takes special care to create only 1 A object.
+
+ If virtual and nonvirtual inheritance are mixed, C++ requires stating explicitly which parent class the feature to be used is invoked from. 
+
+B::A or C::A
+
+* **what are virtual functions?**
+virtual functions are used with inheritance. virtual functions are resolved late at runtime.
+
+```
+class Animal {
+    public:
+    virtual void talk() {cout << "hi" << endl;}
+};
+
+class Cat : public Animal {
+    public:
+    void talk() {cout << "meow" << endl;}
+};
+
+int main(){
+    Animal *a = new Cat();
+    a->talk();
+    return 0;
+}
+```
+
+pure virtual functions can be overridden in the derived class but cannot be defined. It is declared using =0.
+
+virtual means we can `override` the method
+
+* **why are destructors important?**
+
+C++ doesn't have garbage collector. So it helps us free up objects
+`resource leak`
+
+* **pointers**
+http://www.cplusplus.com/doc/tutorial/pointers/
+
+&(reference) - gives you address occupied by variable
+*(dereference) - ptr to. 
+int *p - points to an integer value in memory address
+
+https://www.programiz.com/cpp-programming/pointers
+
+int *p, c;
+c = 2; //c=2 
+p=&c; // p's addr = c's addr. *p should also be 2.
+
+int var;
+int *p1 = &var; // both pt to addr of var
+int *p2 = p1;
+
+
+* **static**
+http://www.bogotobogo.com/cplusplus/statics.php
+
+1. persistence: remains in memory until end of program
+2. file scope: seen only w/in file where its defined
+3. visibility: if defined w/in func, scope is limited to func
+4. class: static members exist as members of class rather than as an instance in each object of class. so `this` is not available in a static member function. Such functions may access only static data members. Only a signle instance of each static data member for entire class.
+static data member: class variable
+non-static data member: instance variable
+5. static member func: can only access static member data or other static member funcs while non-static member funcs can access all data members of the class: static and non-static
+
+* **const and extern**
+global variable has external linkage by default.
+`const` global has `internal` linkage by default.
+C++ treats global `const` as if `static` had been used.
+
+use `extern` const int a = 20 to declare the constant in other files
+
+static members exist as members of class rather than instance. so `this` keyword is not available. Such functions may only access `static` data members. 
+
+non-static members cannot be used as default arguments
+
+
+
+
+* **Singleton**
+// Singleton Design Patterns?
+
+Singleton gives you
+1. Global access to an object (globals are generally bad)
+2. Guarantee that no more than one object of this type can ever be created.
+
+ensures class has only one instance. Provides global point of access to it. 
+elegant way of maintaining global state. 
+
+
+* When would you need private constructors?
+If constructor is private, you can't create instance of class.
+
+- restricting object creation for all but friends
+- when singleton `class` is not inheritable. If it is inheritable then use `protected` constructor
+- restrict certain types of constructor
+- If you want to have object created for class then use getInstance() method which must be static.
+- commonly used w/ _Builder_ methods.
+
+http://www.geeksforgeeks.org/commonly-asked-c-interview-questions-set-1/
+
+* **Differences between C and C++**
+1. C++ is superset of C.
+2. C++ supports procedural and OOP
+3. C++ supports OOP, features like function overloading, templates, inheritance, virtual functions, friend functions. these features are absent in C
+4. C++ supports exception handling at language level. In C exception handling is done in traditional if-else style
+5. C++ supports references. C doesn't
+6. C++ uses streams to perform input and output operations.
+
+* **Differences between references and pointers?**
+Both 
+----
+both references and pointers can be used to change local variables of one function inside another function. both can be used to save copying big objects when passed as arguments.
+
+*References are less powerful than pointers*
+1. Once reference is created, it cannot be later made to reference another object. This is often done w/ pointers.
+2. References cannot be NULL. pointers are often NULL
+3. A Reference must be initialized when declared. There is no such restrictions with pointers.
+
+Due to limitations, references in C++ cannot be used to implement data structures. In Java references don't have above restrictions. so it can be used to implement all data structures. hence main reason Java doesn't need pointers.
+
+* **what is `this` pointer?**
+`this` pointer is passed as hidden argument to all nonstatic member functions calls and available as local variable w/in body of all nonstatic functions. `this` pointer is a constant pointer that holds memory address of current object. It is not available in static member functions since they can be called without an object.
+
+For class X, the type of pointer is `X* const`
+
+delete should not be used for `this` pointer. delete works only for objects allocated with `new`. Else behavior is undefined.
+
+* **What is VTABLE and VPTR?**
+vtable is table of function pointers. maintained per class.
+vptr is ptr to vtable. maintained per object
+
+compiler add additional code at 2 places to maintian vtable and vptr
+1. constructor: sets vptr of object being created. sets vptr to point to vtable of class
+2. code w/ polymorphic function call: When call is made, compiler first looks for vptr using base class pointer. Once vptr is fetched, vtable of derived class can be accessed. Using vtable, address of function show() can be called.
+
+
+abstract data type:
+- stack, map, list, set
+
+concrete data structure:
+- singly-linked list
+- hashtable
+
+for given abstract data type (ie Queue), suggest at least 2 possible concrete implementations and explain performance trade-offs.
+
+
+* **using new**
+``` (new)
+MyClass * a = new MyClass();
+a->method();
+
+MyClass a;
+a.method();
+```
+
+*new* allocates memory on heap. You must explicitly delete it.
+If you don't have *new* it allocates memory on stack. don't need to worry about deleting it. Memory deleted when out of scope.
+
+`->` - for accessing object member var & methods via `pointer` to object
+`.` - for accessing object member var & methods via object `instance`
+`::` - for accessing static var & methods of class/struct or namespace
+
+
+* **inline**
+inline functions are faster in execution (compiler optimization technique) compared to normal functions as compiler treats the inline functions as macros.
+
+* **macro vs inline**
+macros are text substitutions. `#define`. They are replaced with their expansion before any compilation starts.
+
+inline functions are actual functions where the body is directly injected into their call site
+
+inline are expanded by compiler, macros are expanded by preprocessor. So expands prior to type checking
+macros are not type safe. inlines are.
+
+undesired results may occur from macro
+```
+#define MAX(a, b) ((a>b) ? a : b)
+int i=5; j=MAX(i++, 0);
+
+>>> int i= 5; j=((i++ > 0) ? i++ : 0)
+```
+
+* **storage class**
+storage class specifies life or scope of symbols such as variables or functions
+
+following sotrage classes are supported in C++: `auto, static, extern, register, mutable`
+
+`mutable` storage class specifier can alter a constant class object's member variable
+
+if a variable is used most frequently, then it should be declared using `register` storage specifier. Then the compiler gives CPU register for its storage to speed up the look up of the variable
+
+`extern` storage specifier is used to resolve scope of global symbol
+
+* **volatile**
+tells compiler that the variable will be used by multiple threads. Variables declared volatile will not be cached by the compiler.
+
+* **friend function**
+not a member of the class but still can access all the member of the class is called so.
+
+* **copy constructor**
+constructor that takes same class object reference as the parameter. Gets automatically invoked as soon as the object is initialized with another object of the same class
+
+* **namespace**
+namespace is logical division of code which can be used to resolve the name conflict of the identifiers by placing them under different name space.
+
+* **passing parameters**
+by default functions are call by value
+
+call by value (do not want actual parameters to be modified)
+call by address (pass in address if we want parameters to be modified)
+call by reference (if we want parameters to be modified)
+
+```
+<Call by Reference>
+void swap(int &a, int &b){
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+swap(a, b);
+
+<Call by Pointer/Address>
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+swap(&a, &b);
+
+```
+
+
+* **virtual destructor**
+ensures object resources are released in reverse order of object being constructed w/ respect to inherited obejct
+
+* **vectors vs linked list** (std::list == double linked list)
+vectors:
+vectors are good for random read access and insertion and deletion in the back.
+but bad for insertions and deletions in the front or any other position. O(n)
+vectors have contiguous memory. 
+
+lists:
+have non-contiguous memory.
+linked lists are good for inserting or deleting items in the front or back but not particularly good for much else. It takes O(n) time to find a node in the middle. But if you want to insert or delete a node in the middle and found that node then it takes O(1) time to do so.
+
+
+* **interface**
+1. interface can only contain bodyless abstract methods. C++ equivalent is `pure virtual` methods.
+2. interface can only contain `static final` data members. C++ equivalent is `static const` data members which are compile time constants.
+3. multiple interface can be `implemented` by Java `class`. This is because Java `class` can inherit only 1 `class`. C++ supports multiple inheritances straight away with help of `virtual` keyword.
+
+
+* **final vs const**
+When talking about primitive types such as strings or ints they act the same. they are both immutable once defined.
+
+```
+const int a = 10; // C++
+final int a = 10; // java
+a = 11; // invalid in both languages
+```
+
+In Java, `final` means it can't be reassigned to another reference to another instance but if it's a reference to a mutable class, the values inside the mutable class can still be modified.
+
+For example a final ArrayList means that you cannot assign it to another ArrayList but you can still add adn remove elements to that ArrayList.
+
+but `const list<int> mylist` means it is impossible to modify that list.
+
+``` (C++)
+const Person* person = myself;
+person = otherPerson; //valid ... unless we declared it const Person* const
+person->setAge(20); //Invalid assuming setAge() isn't a const method (it shouldn't be)
+
+(Java)
+final Person person = myself;
+person = otherPerson; // invalid
+person.setAge(20); // valid
+```
+
+final keyword is equivalent to a const pointer.
+
+
+
+
+
+
+
+
+
+* when would you use a linked list vs a vector?
+* can you implement a map with a tree? what about w/ a list?
+* how to print out nodes of tree in level order?
+* what's worst case insertion performance of hashtable? of binary tree?
+* what are some options for implementing a priority queue?
+
+
+*Builder*
+_builder_
+__builder__
+* __builder__ ~~hi~~ *
+
+``` C++
+
+```
+
+know how to do file I/O and traversing a directory tree
+
+
+

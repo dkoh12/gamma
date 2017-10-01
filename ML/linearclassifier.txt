@@ -1,0 +1,149 @@
+
+n samples w/ d features
+sample pt / feature vector 
+
+decision boundary (hyperplane)
+f(x) > 0   if x in class C
+f(x) <= 0  if x not in class C
+
+
+(dot product) inner product = x^T * y = x1y1 + x2y2 + ...
+
+cos(theta) = x * y / |x||y|
+
+given linear predictor f(x) = w * x + a, decision boundary is w*x = -1
+
+**Perceptron**
+- gradient descent. slow.
+for each sample pt, let yi = 1 if Xi in class C. -1 if Xi not in class C.
+(consider only decision boundaries that pass through origin)
+
+goal = find weights (w) s.t. 
+Xi * w >= 0    if yi = 1
+Xi * w <= 0    if yi = -1
+
+equivalently: yiXi * w >= 0
+
+L(z, yi) = {0     if yiz >= 0
+            -yiz  otherwise}
+yi = correct answer
+z = classifier's prediction 
+
+find (w) that minimizes R(w)
+R(w) = sum of -yiXi * w
+
+w <- w + e sum yiXi
+e = learning rate
+
+**stochastic gradient descent**
+take one misclassified Xi and do gradient descent on Loss Function
+
+if hyperplane doesn't pass through origin, add fictitious dimensions
+w*x + a = 0
+[w1 w2 a] [x1 x2 1]^T = 0
+(d+1) dimensional space
+
+**perceptron convergence thm**
+if data is linearly seperable, perceptron will find linear classifier that classifies all data correctly
+
+
+**Maximum Margin Classifiers (aka hard margin SVM)**
+margin of linear classifier is distance from decision boundary to nearest sample pt.
+
+margin is at least 1/|w|
+slab of width 2/|w|.
+
+to maximimize margin, minimize |w|. 
+
+**Soft Margin SVM**
+hard-margin svm fails if data is not linearly separable. sensitive to outliers
+soft margin svm allows some pts to violate w/ slack variables.
+
+yi(Xi * w - a) >= 1 - E (slack var)
+E >= 0. equals 0 if it doesn't violate margin
+
+Optimization
+--------
+find min |w|^2 + C sum(E)
+
+big C
+----
+keep most slack var 0 or small
+overfit
+very sensitive
+more sinuous
+
+small C
+-----
+maximize margin 1/|w|
+underfit
+less sensitive
+more "flat"
+
+if C is inifinite, we have a hard-margin SVM
+
+- data could be linearly separable if you lift them to a higher degree even if original data are not linearly separable.
+- raising degree can increase margin so you might get a more robust separator
+
+
+Linear Programmin
+- Simplex Algorithm. Walk along edges of polytope until it find optimum
+
+matrix is PD (+ definite) if wTQw > 0 for all w != 0
+
+**Decision Theory**
+(classifiers)
+
+Bayes decision rule (aka Bayes classifier) is r that minimizes R(r)
+Bayes risk (aka optimal risk) is risk of Bayes classifier
+
+**Generative Models**
+LDA. Popular when you have phenomena that are really well fitted by normal distribution
+
+- guess form of distribution. 
+- for each class C, fit distribution parameters to class C pts, giving P(X| Y = C)
+- for each C, estimate P(Y=C)
+- Baye's Thm gives us P(Y|X)
+- if 0-1 loss, pick class C that maximizes P(Y=C|X=x) equivalently, maximizes P(X=x|Y=C)P(Y=C)
+
+full probabilistic model of all variables
+
+adv. 
+----
+can diagnose outliers. 
+
+disadv.
+-------
+hard to estimate distributions accurately.
+real distributions rarely match standard ones.
+
+**Discriminative Models**
+Logistic Regression
+
+- model P(Y|X) directly
+
+provides a model only for target variables
+
+
+adv. of both models
+---------------
+P(Y|X) tells you probability that your guess is wrong
+
+-> find decision boundary (SVM)
+- model r(x) directly (no posterior)
+
+
+
+**Gaussian Discriminant Analysis**
+fundamental assumption: each class comes from normal distribution
+
+QDA (quadratic discriminant analysis)
+- can determine probability that your classification is correct
+
+
+
+
+
+
+
+
